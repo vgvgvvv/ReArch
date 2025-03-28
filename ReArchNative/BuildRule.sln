@@ -1,0 +1,22 @@
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2017
+VisualStudioVersion = 17.0.31314.256
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{c5cd3546-a0b2-4396-861f-55e50f1f979a}") = "CompileRules", "Intermedia\CppBuildRule\Project\CompileRules.csproj", "{c5cd3546-a0b2-4396-861f-55e50f1f979a}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AnyCPU = Debug|AnyCPU
+		Release|AnyCPU = Release|AnyCPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{c5cd3546-a0b2-4396-861f-55e50f1f979a}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{c5cd3546-a0b2-4396-861f-55e50f1f979a}.Debug|x64.Build.0 = Debug|Any CPU
+		{c5cd3546-a0b2-4396-861f-55e50f1f979a}.Release|x64.ActiveCfg = Release|Any CPU
+		{c5cd3546-a0b2-4396-861f-55e50f1f979a}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

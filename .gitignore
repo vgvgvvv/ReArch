@@ -399,3 +399,7 @@ FodyWeavers.xsd
 /UnityDemo/ReArchDemo/Library/
 /UnityDemo/ReArchDemo/Temp/
 /UnityDemo/ReArchDemo/UserSettings/
+/ReArchNative/Intermedia/
+/ReArchNative/.idea/
+/ReArchNative/cmake-build-debug/
+/ReArchNative/cmake-build-release/
