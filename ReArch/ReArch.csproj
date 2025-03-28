@@ -1,8 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>13</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Collections.Pooled" Version="1.0.82" />
+      <PackageReference Include="System.Memory" Version="4.6.2" />
+      <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Core\Utils\" />
+    </ItemGroup>
 
 </Project>
