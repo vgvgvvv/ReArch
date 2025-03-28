@@ -12,8 +12,4 @@
       <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Core\Utils\" />
-    </ItemGroup>
-
 </Project>

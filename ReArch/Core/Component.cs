@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 
 using Arch.Core.Extensions.Internal;
 
+using ReArch.Core.Utils;
+
 namespace ReArch.Core;
 
 public struct ComponentType
@@ -176,12 +178,12 @@ public static class Component
 		return !ComponentRegistry.TryGet(type, out var index) ? ComponentRegistry.Add(type) : index;
 	}
 
-	public static int GetHashCode(Span<ComponentType> obj)
+	public static int GetHashCode(NativeArray<ComponentType> obj)
 	{
 		
 	}
 
-	public static int GetHashCode(Span<uint> span)
+	public static int GetHashCode(NativeArray<uint> span)
 	{
 		
 	}
@@ -191,7 +193,6 @@ public static class Component
 public static class Component<T>
 {
 
-	
 	public static readonly ComponentType ComponentType;
 
 	public static readonly Signature Signature;

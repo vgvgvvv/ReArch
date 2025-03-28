@@ -61,12 +61,12 @@ public struct Signature : IEquatable<Signature>
     
     public bool Equals(Signature other)
     {
-        return _hashCode == other._hashCode && Equals(ComponentsArray, other.ComponentsArray);
+        
     }
 
     public override bool Equals(object obj)
     {
-        return obj is Signature other && Equals(other);
+        
     }
 
     public override int GetHashCode()
