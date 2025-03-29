@@ -1,0 +1,92 @@
+# 构建结果和二进制文件
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# IDE和编辑器文件
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.idea/
+.localhistory/
+.vshistory/
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Unity生成的文件
+/UnityDemo/ReArchDemo/Library/
+/UnityDemo/ReArchDemo/Temp/
+/UnityDemo/ReArchDemo/UserSettings/
+/UnityDemo/ReArchDemo/obj/
+/UnityDemo/ReArchDemo/Logs/
+/UnityDemo/ReArchDemo/Build/
+*.csproj
+*.unityproj
+*.sln
+*.pidb
+*.unitypackage
+*.apk
+*.aab
+
+# 原生项目生成文件
+/ReArchNative/Intermedia/
+/ReArchNative/cmake-build-debug/
+/ReArchNative/cmake-build-release/
+/ReArchNative/.idea/
+
+# 依赖项
+node_modules/
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# 临时文件和缓存
+*~
+*.tmp
+*.temp
+*.cache
+.sass-cache/
+__pycache__/
+*.pyc
+
+# Git相关
+.git/
+
+# 大型二进制文件
+*.exe
+*.dll
+*.so
+*.dylib
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# 日志和报告
+*.log
+*.tlog
+TestResults/
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.coverage
+*.coveragexml
+
+# 系统文件
+.DS_Store
+Thumbs.db 

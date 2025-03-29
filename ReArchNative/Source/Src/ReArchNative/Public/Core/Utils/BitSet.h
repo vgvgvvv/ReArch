@@ -12,9 +12,6 @@ extern "C"
         uint32* Bits = nullptr;
     };
 
-    inline BitSet* BitSet_Create(int32 highestBit)
-    {
-        BitSet* bs = new BitSet();
-    }
+    BitSet* BitSet_Create(int32 highestBit);
 }
 
