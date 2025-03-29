@@ -64,3 +64,37 @@ void NativeArray_Set(NativeArray* array, int32 index, void* value)
     }
 }
 
+/**
+ * 获取NativeArray中指定索引位置的值
+ * @param array 源NativeArray指针
+ * @param index 要获取的元素索引
+ * @param result 用于存储结果的指针
+ */
+void* NativeArray_Get(NativeArray* array, int32 index)
+{
+    if (array && array->data && index >= 0 && index < array->size)
+    {
+        // 计算源内存位置
+        uint8* sourcePosition = array->data + (index * array->itemSize);
+        return sourcePosition;
+    }
+    return nullptr;
+}
+
+int32 NativeArray_GetSize(NativeArray *array)
+{
+    if(array == nullptr)
+    {
+        return 0;
+    }
+    return array->size;
+}
+
+int32 NativeArray_GetItemSize(NativeArray *array)
+{
+    if(array == nullptr)
+    {
+        return 0;
+    }
+    return array->itemSize;
+}

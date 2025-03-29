@@ -8,18 +8,23 @@ extern "C"
 {
     struct NativeArray
     {
-        uint8* data;
         int32 size;
         int32 itemSize;
+        uint8* data;
     };
 
-    NativeArray* NativeArray_Create(int32 itemSize, int32 itemCount);
+    REARCHNATIVEMODULE_API NativeArray* NativeArray_Create(int32 itemSize, int32 itemCount);
 
-    void NativeArray_Destroy(NativeArray* array);
+    REARCHNATIVEMODULE_API void NativeArray_Destroy(NativeArray* array);
 
-    void NativeArray_Clear(NativeArray* array);
+    REARCHNATIVEMODULE_API void NativeArray_Clear(NativeArray* array);
 
-    void NativeArray_Set(NativeArray* array, int32 index, void* value);
+    REARCHNATIVEMODULE_API void NativeArray_Set(NativeArray* array, int32 index, void* value);
 
+    REARCHNATIVEMODULE_API void* NativeArray_Get(NativeArray* array, int32 index);
+
+    REARCHNATIVEMODULE_API int32 NativeArray_GetSize(NativeArray* array);
+
+    REARCHNATIVEMODULE_API int32 NativeArray_GetItemSize(NativeArray* array);
 }
 
