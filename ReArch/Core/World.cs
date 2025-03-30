@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 
@@ -172,7 +173,53 @@ public partial class World
 		EntityInfo.Remove(entity.Id);
 		Size--;
 	}
+	
+	[StructuralChange]
+	public Entity Create(params ComponentType[] types)
+	{
+		return Create(new Signature(types));
+	}
+	
+	[StructuralChange]
+	public Entity Create(in Signature types)
+	{
+		// Create new entity and put it to the back of the array
+		GetOrCreateNextEntity(out var entity);
 
+		// Add to archetype & mapping
+		var archetype = GetOrCreateArchetype(in types);
+		var allocatedEntities = archetype.Add(entity, out var index);
+
+		// Resize map & Array to fit all potential new entities
+		Capacity += allocatedEntities;
+		EntityInfo.EnsureCapacity(Capacity);
+
+		// Add entity to info storage
+		EntityInfo.Add(entity.Id, archetype, index);
+
+		return entity;
+	}
+
+	// internal void Move(Entity entity, Archetype source, Archetype destination, out int destinationIndex)
+	// {
+	// 	// A common mistake, happening in many cases.
+	// 	Debug.Assert(source != destination, "From-Archetype is the same as the To-Archetype. Entities cannot move within the same archetype using this function. Probably an attempt was made to attach already existing components to the entity or to remove non-existing ones.");
+	//
+	// 	// Copy entity to other archetype
+	// 	ref var slot = ref EntityInfo.GetSlot(entity.Id);
+	// 	var allocatedEntities = destination.Add(entity, out destinationIndex);
+	// 	Archetype.CopyComponents(source, ref slot, destination, ref destinationIndex);
+	// 	source.Remove(slot, out var movedEntity);
+	//
+	// 	// Update moved entity from the remove
+	// 	EntityInfo.Move(movedEntity, slot);
+	// 	EntityInfo.Move(entity.Id, destination, destinationIndex);
+	//
+	// 	// Calculate the entity difference between the moved archetypes to allocate more space accordingly.
+	// 	Capacity += allocatedEntities;
+	// 	EntityInfo.EnsureCapacity(Capacity);
+	// }
+	
 }
 
   #endregion

@@ -130,6 +130,41 @@ public class Archetype
 	// Get Entity
 	// Has Component
 	// GetComponent
+	
+	internal int Add(Entity entity, out int index)
+	{
+		EntityCount++;
+		bool alloced = EnsureCapacity(EntityCount);
+		index = Entities.Add(entity);
+		foreach (var component in Components)
+		{
+			component.AddDefault();
+		}
+		return alloced ? EntitiesPerChunk : 0;
+	}
+
+	private bool EnsureCapacity(int capacity)
+	{
+		if(Entities.Capacity < capacity)
+		{
+			Entities.EnsureCapacity(capacity);
+			foreach (var component in Components)
+			{
+				component.EnsureCapacity(capacity);
+			}
+			return false;
+		}
+		return true;
+	}
+
+	private void TrimExcess()
+	{
+		Entities.TrimExcess();
+		foreach (var component in Components)
+		{
+			component.TrimExcess();
+		}
+	}
 
 	public void Clear()
 	{

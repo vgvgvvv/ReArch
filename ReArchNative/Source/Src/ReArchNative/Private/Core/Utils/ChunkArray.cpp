@@ -245,6 +245,110 @@ int32 ChunkArray_Add(ChunkArray* arr, void* item)
     return globalIndex;
 }
 
+int32 ChunkArray_AddDefault(ChunkArray* arr)
+{
+    if (!arr)
+    {
+        return -1;
+    }
+
+    // 确保有足够的空间
+    if (!EnsureCapacity(arr))
+    {
+        return -1;
+    }
+
+    // 计算每个块可容纳的元素数量
+    int32 itemsPerChunk = arr->ChunkSizeInBytes / arr->ItemSizeInByte;
+
+    // 查找可用的块
+    int32 targetChunkIndex = arr->ItemCount / itemsPerChunk;
+    RE_ASSERT(targetChunkIndex < arr->ChunkCount)
+
+    // 获取目标块
+    Chunk* targetChunk = &arr->Chunks[targetChunkIndex];
+
+    // 计算新元素在块中的位置
+    int32 indexInChunk = targetChunk->ItemCount;
+    uint8* targetAddress = static_cast<uint8*>(targetChunk->Data) + (indexInChunk * targetChunk->ItemSize);
+
+    // 复制元素数据
+    memset(targetAddress, 0, targetChunk->ItemSize);
+
+    // 更新计数
+    targetChunk->ItemCount++;
+    arr->ItemCount++;
+
+    // 计算并返回新元素的全局索引
+    int32 globalIndex = 0;
+    for (int32 i = 0; i < targetChunkIndex; ++i)
+    {
+        globalIndex += arr->Chunks[i].ItemCount;
+    }
+    globalIndex += indexInChunk;
+
+    return globalIndex;
+}
+
+/**
+ * 批量添加多个连续元素到ChunkArray
+ * @param arr ChunkArray指针
+ * @param items 指向要添加的元素数组的指针
+ * @param count 要添加的元素数量
+ * @return 第一个添加元素的索引，失败返回-1
+ */
+int32 ChunkArray_AddRange(ChunkArray* arr, void* items, int32 count)
+{
+    if (!arr || !items || count <= 0)
+    {
+        return -1;
+    }
+    
+    // 记录当前元素数量作为返回值（第一个添加元素的索引）
+    int32 firstIndex = arr->ItemCount;
+    
+    // 计算每个块可容纳的元素数量
+    int32 itemsPerChunk = arr->ChunkSizeInBytes / arr->ItemSizeInByte;
+    
+    // 确保有足够的空间存储所有新元素
+    int32 requiredCapacity = arr->ItemCount + count;
+    ChunkArray_EnsureCapacity(arr, requiredCapacity);
+    
+    // 逐个添加元素
+    uint8* sourcePtr = static_cast<uint8*>(items);
+    for (int32 i = 0; i < count; ++i)
+    {
+        // 计算当前元素的目标块索引
+        int32 targetChunkIndex = arr->ItemCount / itemsPerChunk;
+        
+        // 确保不会越界
+        if (targetChunkIndex >= arr->ChunkCount)
+        {
+            // 这不应该发生，因为我们已经确保了容量，但为了健壮性添加此检查
+            return firstIndex;
+        }
+        
+        // 获取目标块
+        Chunk* targetChunk = &arr->Chunks[targetChunkIndex];
+        
+        // 计算新元素在块中的位置
+        int32 indexInChunk = targetChunk->ItemCount;
+        uint8* targetAddress = static_cast<uint8*>(targetChunk->Data) + (indexInChunk * targetChunk->ItemSize);
+        
+        // 复制元素数据
+        memcpy(targetAddress, sourcePtr, targetChunk->ItemSize);
+        
+        // 更新指针位置到下一个源元素
+        sourcePtr += targetChunk->ItemSize;
+        
+        // 更新计数
+        targetChunk->ItemCount++;
+        arr->ItemCount++;
+    }
+    
+    return firstIndex;
+}
+
 /**
  * 获取ChunkArray中指定索引处的元素
  * @param arr ChunkArray指针
@@ -311,6 +415,73 @@ void ChunkArray_Remove(ChunkArray* arr, int32 index)
     // 更新计数
     chunk->ItemCount--;
     arr->ItemCount--;
+}
+
+void ChunkArray_RemoveRange(ChunkArray* arr, int32 index, int32 count)
+{
+    if (!arr || index < 0 || count <= 0 || index + count > arr->ItemCount)
+    {
+        return;
+    }
+
+    // 计算每个块可容纳的元素数量
+    int32 itemsPerChunk = arr->ChunkSizeInBytes / arr->ItemSizeInByte;
+    if (itemsPerChunk <= 0)
+    {
+        return;
+    }
+
+    // 获取起始和结束位置的槽位
+    Slot startSlot = IndexToSlot(arr, index);
+    Slot endSlot = IndexToSlot(arr, index + count - 1);
+
+    if (startSlot.IndexOfChunk < 0 || endSlot.IndexOfChunk >= arr->ChunkCount)
+    {
+        return;
+    }
+
+    // 如果要删除的范围在同一个块内
+    if (startSlot.IndexOfChunk == endSlot.IndexOfChunk)
+    {
+        Chunk* chunk = &arr->Chunks[startSlot.IndexOfChunk];
+        uint8* removeAddr = static_cast<uint8*>(chunk->Data) + (startSlot.IndexInChunk * chunk->ItemSize);
+        
+        // 移动后面的元素填补空缺
+        if (endSlot.IndexInChunk < chunk->ItemCount - 1)
+        {
+            uint8* nextAddr = static_cast<uint8*>(chunk->Data) + ((endSlot.IndexInChunk + 1) * chunk->ItemSize);
+            int32 bytesToMove = (chunk->ItemCount - endSlot.IndexInChunk - 1) * chunk->ItemSize;
+            memmove(removeAddr, nextAddr, bytesToMove);
+        }
+        
+        chunk->ItemCount -= count;
+    }
+    else
+    {
+        // 处理第一个块
+        Chunk* firstChunk = &arr->Chunks[startSlot.IndexOfChunk];
+        firstChunk->ItemCount = startSlot.IndexInChunk;
+
+        // 处理中间的块
+        for (int32 i = startSlot.IndexOfChunk + 1; i < endSlot.IndexOfChunk; ++i)
+        {
+            arr->Chunks[i].ItemCount = 0;
+        }
+
+        // 处理最后一个块
+        Chunk* lastChunk = &arr->Chunks[endSlot.IndexOfChunk];
+        int32 remainingItems = lastChunk->ItemCount - endSlot.IndexInChunk - 1;
+        if (remainingItems > 0)
+        {
+            uint8* moveFrom = static_cast<uint8*>(lastChunk->Data) + ((endSlot.IndexInChunk + 1) * lastChunk->ItemSize);
+            uint8* moveTo = static_cast<uint8*>(firstChunk->Data) + (startSlot.IndexInChunk * firstChunk->ItemSize);
+            memcpy(moveTo, moveFrom, remainingItems * lastChunk->ItemSize);
+            firstChunk->ItemCount += remainingItems;
+        }
+        lastChunk->ItemCount = 0;
+    }
+
+    arr->ItemCount -= count;
 }
 
 void ChunkArray_EnsureCapacity(ChunkArray* arr, int32 count)

@@ -6,25 +6,25 @@ namespace ReArch.Core.Utils;
 
 internal struct Slot
 {
-	int IndexOfChunk;
-	int IndexInChunk;
+	public int IndexOfChunk;
+	public int IndexInChunk;
 };
 
 internal unsafe struct Chunk
 {
-	int ItemSizeInByte;
-	int ItemCount;
-	void* Data;
+	public int ItemSizeInByte;
+	public int ItemCount;
+	public void* Data;
 };
 
 internal unsafe struct ChunkArray_Native
 {
-	int ItemSizeInByte;
-	int ItemCount;
-	int ChunkCount;
-	int ChunkSizeInBytes;
+	public int ItemSizeInByte;
+	public int ItemCount;
+	public int ChunkCount;
+	public int ChunkSizeInBytes;
 
-	Chunk* Chunks;
+	public Chunk* Chunks;
 };
 
 /// <summary>
@@ -49,6 +49,8 @@ public unsafe class ChunkArray : IDisposable
 	/// 获取元素的大小（字节）
 	/// </summary>
 	public int ItemSize => IsValid ? ChunkArrayDllImport.ChunkArray_GetItemSize(_nativeArray) : 0;
+	
+	public int Capacity => IsValid ? _nativeArray->ChunkCount * _nativeArray->ItemCount : 0;
 	
 	/// <summary>
 	/// 获取原生ChunkArray指针
@@ -78,6 +80,13 @@ public unsafe class ChunkArray : IDisposable
 			throw new InvalidOperationException("Failed to create chunk array");
 	}
 	
+	public int AddDefault()
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+		return ChunkArrayDllImport.ChunkArray_AddDefault(NativeArrayPtr);
+	}
+	
 	/// <summary>
 	/// 向数组中添加元素
 	/// </summary>
@@ -93,7 +102,20 @@ public unsafe class ChunkArray : IDisposable
 			
 		return ChunkArrayDllImport.ChunkArray_Add(_nativeArray, itemPtr);
 	}
-	
+
+	public void AddRange(void* ptr, int count)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (ptr == null)
+			throw new ArgumentNullException(nameof(ptr));
+			
+		if (count <= 0)
+			throw new ArgumentException("Count must be greater than zero", nameof(count));
+			
+		ChunkArrayDllImport.ChunkArray_AddRange(_nativeArray, ptr, count);
+	}
 	
 	/// <summary>
 	/// 向数组中添加元素
@@ -176,7 +198,28 @@ public unsafe class ChunkArray : IDisposable
 			
 		ChunkArrayDllImport.ChunkArray_Remove(_nativeArray, index);
 	}
-	
+
+	public void RemoveRange(int index, int count)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (index < 0 || index >= Count)
+			throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range [0, {Count - 1}]");
+			
+		if (count < 0)
+			throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative");
+			
+		if (index + count > Count)
+			throw new ArgumentException($"Range [index, index + count) = [{index}, {index + count}) is outside array bounds [0, {Count})");
+			
+		// 循环移除指定范围内的元素
+		for (int i = 0; i < count; i++)
+		{
+			ChunkArrayDllImport.ChunkArray_Remove(_nativeArray, index);
+		}
+	}
+
 	public void EnsureCapacity(int count)
 	{
 		if (!IsValid)
@@ -265,7 +308,25 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 	{
 		return AddUnsafe(&item);
 	}
-	
+
+	/// <summary>
+	/// 向数组中添加一组元素
+	/// </summary>
+	/// <param name="items">要添加的元素集合</param>
+	public void AddRange(Slice<T> items)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (items.Length == 0)
+			return;
+			
+		fixed (T* ptr = &items.FirstItem[0])
+		{
+			AddRange(ptr, items.Length);
+		}
+	}
+
 	/// <summary>
 	/// 获取指定索引处的元素
 	/// </summary>
@@ -374,9 +435,15 @@ internal unsafe static class ChunkArrayDllImport
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern int ChunkArray_Add(ChunkArray_Native* arr, void* item);
 	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern int ChunkArray_AddDefault(ChunkArray_Native* arr);
+	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern int ChunkArray_AddRange(ChunkArray_Native* arr, void* item, int count);
+	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void* ChunkArray_Get(ChunkArray_Native* arr, int index);
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_Remove(ChunkArray_Native* arr, int index);
+	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern void ChunkArray_RemoveRange(ChunkArray_Native* arr, int index, int count);
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_EnsureCapacity(ChunkArray_Native* arr, int count);
 	[DllImport(DllImport.ReArchNativeDll)]
