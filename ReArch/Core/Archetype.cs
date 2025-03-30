@@ -34,11 +34,6 @@ public class Archetypes : IDisposable
 		GetHashCode();
 	}
 	
-	public Slice<Archetype> AsSpan()
-	{
-		return Items.Span;
-	}
-
 	public Archetype this[int index]
 	{
 		get => Items[index];

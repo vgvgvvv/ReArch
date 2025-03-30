@@ -403,3 +403,4 @@ FodyWeavers.xsd
 /ReArchNative/.idea/
 /ReArchNative/cmake-build-debug/
 /ReArchNative/cmake-build-release/
+/ReArchNative/build/
