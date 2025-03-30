@@ -62,6 +62,20 @@ internal class EntityInfoStorage
 		EntityDatas.Remove(id);
 	}
 	
+	public void Move(int id, int index)
+	{
+		EntityDatas[id].Index = index;
+	}
+	
+	public void Move(int id, Archetype archetype, int index)
+	{
+		ref var data = ref EntityDatas[id];
+		data.Archetype = archetype;
+		data.Index = index;
+	}
+	
+	// TODO:public void Shift(Archetype archetype, Slot archetypeSlot, Archetype newArchetype, Slot newArchetypeSlot)
+	
 	public void EnsureCapacity(int capacity)
 	{
 		EntityDatas.EnsureCapacity(capacity);

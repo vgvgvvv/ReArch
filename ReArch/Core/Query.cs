@@ -266,7 +266,6 @@ public partial struct QueryDescription : IEquatable<QueryDescription>
     }
 }
 
-//TODO: DoQuery
 public partial class Query : IEquatable<Query>
 {
     private readonly Archetypes _allArchetypes;

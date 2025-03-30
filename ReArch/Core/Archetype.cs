@@ -8,7 +8,7 @@ using ReArch.Core.Utils;
 
 namespace ReArch.Core;
 
-public class Archetypes : IDisposable
+public sealed class Archetypes : IDisposable
 {
 
 	private int _hashCode;
@@ -86,7 +86,7 @@ public class Archetypes : IDisposable
 
 }
 
-public class Archetype
+public sealed unsafe partial  class Archetype
 {
 	private readonly int[] _componentIdToArrayIndex;
 	
@@ -123,14 +123,6 @@ public class Archetype
 		_componentIdToArrayIndex = signature.Components.ToLookupArray();
 	}
 
-	// TODO: Implement
-	// Add Entity
-	// Add All Entities
-	// Remove Entity
-	// Get Entity
-	// Has Component
-	// GetComponent
-	
 	internal int Add(Entity entity, out int index)
 	{
 		EntityCount++;
@@ -142,6 +134,52 @@ public class Archetype
 		}
 		return alloced ? EntitiesPerChunk : 0;
 	}
+	
+	// TODO:  public void AddAll(Span<Entity> entities, int amount)
+	// TODO: internal void Remove(int index, out int movedEntityId)
+	// TODO: internal ref Entity GetEntity(scoped ref int index)
+	// TODO: internal int Add<T>(Entity entity, out Slot slot, in T? cmp = default)
+	// TODO:  internal void Set<T>(ref int index, in T? cmp)
+	// TODO: public bool Has<T>()
+	// TODO: internal ref T Get<T>(scoped ref Slot slot)
+	// TODO: internal void SetRange<T>(in Slot from, in Slot to, in T? component = default)
+	// TODO: public Enumerator<Chunk> GetEnumerator()
+	// TODO: internal ChunkRangeIterator GetRangeIterator(int from, int to)
+	
+
+	public void Clear()
+	{
+		EntityCount = 0;
+		Entities.Clear();
+		foreach (var chunkArray in Components)
+		{
+			chunkArray.Clear();
+		}
+	}
+}
+
+public sealed unsafe partial class Archetype
+{
+
+	// internal void Set(ref Slot slot, in object cmp)
+	
+	// bool Has(ComponentType type)
+	
+	// internal object? Get(scoped ref Slot slot, ComponentType type)
+	
+}
+
+public sealed partial class Archetype
+{
+
+	// internal static void Copy(Archetype source, Archetype destination)
+	
+	// internal static void CopyComponents(Archetype from, ref int fromIndex, Archetype to, ref int toIndex)
+
+}
+
+public sealed partial class Archetype
+{
 
 	private bool EnsureCapacity(int capacity)
 	{
@@ -166,8 +204,4 @@ public class Archetype
 		}
 	}
 
-	public void Clear()
-	{
-		EntityCount = 0;
-	}
 }
