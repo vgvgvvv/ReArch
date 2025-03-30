@@ -12,6 +12,8 @@ public sealed class BitSet : IDisposable
 	private const int BitSize = (sizeof(uint) * 8) - 1;           // 31
 	private const int IndexSize = 5;                              // log_2(BitSize + 1)
 	private static readonly int _padding = Vector<uint>.Count;
+
+	public readonly static BitSet Default = new BitSet(_padding);
 	
 	public static int RequiredLength(int id)
 	{

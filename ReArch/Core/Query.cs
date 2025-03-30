@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -142,6 +143,10 @@ public struct Signature : IEquatable<Signature>
 
     public BitSet ToBitSet()
     {
+        if (Components.Length == 0)
+        {
+            return BitSet.Default;
+        }
         int max = ComponentsArray.Max(x => x.Id);
         var bitSet = new BitSet(max);
         bitSet.SetBits(Components);
@@ -262,4 +267,114 @@ public partial struct QueryDescription : IEquatable<QueryDescription>
 }
 
 //TODO: DoQuery
-// public partial class Query : IEquatable<Query>
+public partial class Query : IEquatable<Query>
+{
+    private readonly Archetypes _allArchetypes;
+    private readonly PooledList<Archetype> _matchingArchetypes;
+    private int _allArchetypesHashCode;
+    
+    private readonly QueryDescription _queryDescription;
+    private readonly BitSet _any;
+    private readonly BitSet _all;
+    private readonly BitSet _none;
+    private readonly BitSet _exclusive;
+
+    private readonly bool _isExclusive;
+    
+    internal Query(Archetypes allArchetypes, QueryDescription description)
+    {
+        _allArchetypes = allArchetypes;
+        _matchingArchetypes = new PooledList<Archetype>();
+        _allArchetypesHashCode = -1;
+
+        Debug.Assert(
+            !((description.Any.Count != 0 ||
+                    description.All.Count != 0 ||
+                    description.None.Count != 0) &&
+                description.Exclusive.Count != 0),
+            "If Any, All or None have items then Exclusive may not have any items"
+        );
+
+        // Convert to `BitSet`s.
+        _all = description.All.ToBitSet();
+        _any = description.Any.ToBitSet();
+        _none = description.None.ToBitSet();
+        _exclusive = description.Exclusive.ToBitSet();
+
+        // Handle exclusive.
+        if (description.Exclusive.Count != 0)
+        {
+            _isExclusive = true;
+        }
+
+        _queryDescription = description;
+    }
+    
+    public bool Matches(BitSet bitset)
+    {
+        return _isExclusive ? _exclusive.Exclusive(bitset) : _all.All(bitset) && _any.Any(bitset) && _none.None(bitset);
+    }
+    
+    // TODO: Implement these methods
+    // public QueryArchetypeIterator GetArchetypeIterator()
+    // public QueryChunkIterator GetChunkIterator()
+    // public QueryChunkEnumerator GetEnumerator()
+    
+    private void Match()
+    {
+        // Hashcode changed, list was modified?
+        var newArchetypesHashCode = _allArchetypes.GetHashCode();
+        if (_allArchetypesHashCode == newArchetypesHashCode)
+        {
+            return;
+        }
+
+        // Check all archetypes and update list
+        var allArchetypes = _allArchetypes.Items;
+        _matchingArchetypes.Clear();
+        foreach (var archetype in allArchetypes)
+        {
+            var matches = Matches(archetype.BitSet);
+            if (matches)
+            {
+                _matchingArchetypes.Add(archetype);
+            }
+        }
+
+        _allArchetypesHashCode = newArchetypesHashCode;
+    }
+    
+    public bool Equals(Query other)
+    {
+        return Equals(_any, other._any) && Equals(_all, other._all) && Equals(_none, other._none) && Equals(_exclusive, other._exclusive) && _queryDescription.Equals(other._queryDescription);
+    }
+    
+    public override bool Equals(object? obj)
+    {
+        return obj is Query other && Equals(other);
+    }
+    
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            var hashCode = _any is not null ? _any.GetHashCode() : 0;
+            hashCode = (hashCode * 397) ^ (_all is not null ? _all.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (_none is not null ? _none.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (_exclusive?.GetHashCode() ?? 0);
+            hashCode = (hashCode * 397) ^ _queryDescription.GetHashCode();
+
+            return hashCode;
+        }
+    }
+    
+    public static bool operator ==(Query left, Query right)
+    {
+        return left.Equals(right);
+    }
+    
+    public static bool operator !=(Query left, Query right)
+    {
+        return !left.Equals(right);
+    }
+}
