@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -30,7 +31,7 @@ internal unsafe struct ChunkArray_Native
 /// <summary>
 /// 分块数组，提供对原生ChunkArray的C#包装，适用于大规模数据的高效存储和访问
 /// </summary>
-public unsafe class ChunkArray : IDisposable
+public abstract unsafe class ChunkArray : IDisposable
 {
 	private ChunkArray_Native* _nativeArray;
 	private bool _disposed = false;
@@ -183,6 +184,8 @@ public unsafe class ChunkArray : IDisposable
 			return true;
 		}
 	}
+
+	public abstract object GetObject(int index);
 	
 	/// <summary>
 	/// 移除指定索引处的元素
@@ -344,9 +347,13 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 	{
 		get => Get(index);
 	}
-	
-	
-	
+
+	public override object GetObject(int index)
+	{
+		return this [index];
+	}
+
+
 	/// <summary>
 	/// 将数组中的元素复制到目标数组
 	/// </summary>
@@ -447,4 +454,42 @@ internal unsafe static class ChunkArrayDllImport
 	public static extern void ChunkArray_TrimExcess(ChunkArray_Native* arr);
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_Clear(ChunkArray_Native* arr);
+}
+
+
+
+public static class ArrayRegistry
+{
+	private static readonly Dictionary<int, Func<int, int, ChunkArray>> _createFactories = new(128);
+
+	/// <summary>
+	///     Adds a new array type and registers it.
+	/// </summary>
+	/// <typeparam name="T">The type of the array.</typeparam>
+	public static void Add<T>() where T : unmanaged
+	{
+		_createFactories.Add(Component<T>.ComponentType.Id, ArrayFactory<T>.Create);
+	}
+
+	/// <summary>
+	///     Gets an array of the specified type and capacity. Will use the registered factory if it exists, otherwise it will create a new array using reflection.
+	/// </summary>
+	/// <param name="type">The type of the array.</param>
+	/// <param name="capacity">The capacity of the array.</param>
+	/// <returns>The created array.</returns>
+	public static ChunkArray GetArray(ComponentType type, int countInChunk, int capacity)
+	{
+		return _createFactories.TryGetValue(type.Id, out Func<int, int, ChunkArray> func) ? 
+			func(countInChunk, capacity) : 
+			throw new NotSupportedException($"cannot create chunk array for {type.Type}");
+	}
+
+	/// <summary>
+	///     An array factory that creates arrays of the specified type.
+	/// </summary>
+	/// <typeparam name="T">The type of the array.</typeparam>
+	private static class ArrayFactory<T> where T : unmanaged
+	{
+		public static readonly Func<int, int, ChunkArray> Create = (countInChunk, capacity) => new ChunkArray<T>(countInChunk, capacity);
+	}
 }

@@ -200,29 +200,19 @@ public partial class World
 		return entity;
 	}
 
-	// internal void Move(Entity entity, Archetype source, Archetype destination, out int destinationIndex)
-	// {
-	// 	// A common mistake, happening in many cases.
-	// 	Debug.Assert(source != destination, "From-Archetype is the same as the To-Archetype. Entities cannot move within the same archetype using this function. Probably an attempt was made to attach already existing components to the entity or to remove non-existing ones.");
-	//
-	// 	// Copy entity to other archetype
-	// 	ref var slot = ref EntityInfo.GetSlot(entity.Id);
-	// 	var allocatedEntities = destination.Add(entity, out destinationIndex);
-	// 	Archetype.CopyComponents(source, ref slot, destination, ref destinationIndex);
-	// 	source.Remove(slot, out var movedEntity);
-	//
-	// 	// Update moved entity from the remove
-	// 	EntityInfo.Move(movedEntity, slot);
-	// 	EntityInfo.Move(entity.Id, destination, destinationIndex);
-	//
-	// 	// Calculate the entity difference between the moved archetypes to allocate more space accordingly.
-	// 	Capacity += allocatedEntities;
-	// 	EntityInfo.EnsureCapacity(Capacity);
-	// }
-	
+	// TODO: internal void Move(Entity entity, Archetype source, Archetype destination, out Slot destinationSlot)
+	// TODO: public void Destroy(Entity entity)
+	// TODO: public void TrimExcess()
+	// TODO: public void Clear()
+	// TODO: public Query Query(in QueryDescription queryDescription)
+	// TODO: public int CountEntities(in QueryDescription queryDescription)
+	// TODO: public void GetEntities(in QueryDescription queryDescription, Span<Entity> list, int start = 0)
+	// TODO: public void GetArchetypes(in QueryDescription queryDescription, Span<Archetype> archetypes, int start = 0)
+	// TODO: public void GetChunks(in QueryDescription queryDescription, Span<Chunk> chunks, int start = 0)
+	// TODO:  public Enumerator<Archetype> GetEnumerator()
 }
 
-  #endregion
+#endregion
 
 #region Archetypes
 
@@ -274,16 +264,123 @@ public partial class World
 		Archetypes.Remove(archetype);
 		GroupToArchetype.Remove(hash);
 
-		// Remove archetype from other archetypes edges.
-		// foreach (var otherArchetype in this)
-		// {
-		// 	otherArchetype.RemoveEdge(archetype);
-		// }
-
 		archetype.Clear();
 		Capacity -= archetype.EntitiesPerChunk;
 	}
 
 }
 
-  #endregion
+#endregion
+  
+#region Queries
+
+public partial class World
+{
+
+	
+
+}
+  
+#endregion
+
+#region Batch Query Operations
+
+public partial class World
+{
+	// TODO: public void Destroy(in QueryDescription queryDescription)
+	// TODO: public void Set<T>(in QueryDescription queryDescription, in T? value = default)
+	// TODO: public void Add<T>(in QueryDescription queryDescription, in T? component = default)
+	// TODO: public void Remove<T>(in QueryDescription queryDescription)
+}
+
+#endregion
+
+#region Accessors
+
+public partial class World
+{
+	// TODO: public Archetype EnsureCapacity(in Signature signature, int amount)
+	// TODO: public Archetype EnsureCapacity<T>(int amount)
+	// TODO: internal void GetNextEntitiesIn(Archetype archetype, Span<Entity> entities, Span<EntityData> entityData, int amount)
+	// TODO: internal void AddEntityData(Span<Entity> entities, Span<EntityData> entityData, int amount)
+	// TODO: public void Create(Span<Entity> createdEntities, in Signature signature, int amount)
+	// TODO: public void Create<T>(int amount, in T? cmp = default)
+	// TODO: public void Set<T>(Entity entity, in T? component = default)
+	// TODO: public bool Has<T>(Entity entity)
+	// TODO: public ref T Get<T>(Entity entity)
+	// TODO: public bool TryGet<T>(Entity entity, out T? component)
+	// TODO: public ref T TryGetRef<T>(Entity entity, out bool exists)
+	// TODO: public ref T AddOrGet<T>(Entity entity, T? component = default)
+	// TODO: internal void Add<T>(Entity entity, out Archetype newArchetype, out Slot slot)
+	// TODO: public void Add<T>(Entity entity)
+	// TODO: public void Add<T>(Entity entity, in T component)
+	// TODO: public void Remove<T>(Entity entity)
+}
+
+#endregion
+
+
+
+#region Non-Generic Accessors
+
+public partial class World
+{
+	// TODO: public void Set(Entity entity, object component)
+	// TODO: public void SetRange(Entity entity, Span<object> components)
+	// TODO: public bool Has(Entity entity, ComponentType type)
+	// TODO: public bool HasRange(Entity entity, Span<ComponentType> types)
+	// TODO: public object? Get(Entity entity, ComponentType type)
+	// TODO: public object?[] GetRange(Entity entity, Span<ComponentType> types)
+	// TODO: public void GetRange(Entity entity, Span<ComponentType> types, Span<object?> components)
+	// TODO: public bool TryGet(Entity entity, ComponentType type, out object? component)
+	// TODO: public void Add(Entity entity, in object cmp)
+	// TODO: public void AddRange(Entity entity, Span<object> components)
+	// TODO: public void AddRange(Entity entity, Span<ComponentType> components)
+	// TODO: public void Remove(Entity entity, ComponentType type)
+	// TODO: public void RemoveRange(Entity entity, Span<ComponentType> types)
+}
+
+#endregion
+
+#region Utility
+
+public partial class World
+{
+	[Pure]
+	public bool IsAlive(Entity entity)
+	{
+		return entity.Version > 0 && EntityInfo.Has(entity.Id);
+	}
+
+	public Archetype GetArchetype(Entity entity)
+	{
+		return EntityInfo.GetArchetype(entity.Id);
+	}
+
+	public ComponentType[] GetComponentTypes(Entity entity)
+	{
+		var archetype = EntityInfo.GetArchetype(entity.Id);
+		return archetype.Signature;
+	}
+
+	public unsafe object?[] GetAllComponents(Entity entity)
+	{
+		// Get archetype and chunk.
+        var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+        var archetype = entitySlot.Archetype;
+
+        // Loop over components, collect and returns them.
+        var cmps = new object?[archetype.Components.Length];
+
+        for (var index = 0; index < archetype.Components.Length; index++)
+        {
+            var componentArray = archetype.Components[index];
+            var component = componentArray.GetObject(entitySlot.Index);
+            cmps[index] = component;
+        }
+
+        return cmps;
+	}
+}
+
+#endregion

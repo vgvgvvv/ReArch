@@ -48,6 +48,7 @@ public static class ComponentRegistry
 	public static IReadOnlyDictionary<Type, ComponentType> TypeToComponentType => _typeToComponentType;
 
 	public static IReadOnlyList<Type?> Types => _types;
+	public static Dictionary<Type, ComponentExtensionInfo> ExtensionInfos { get; } = new Dictionary<Type, ComponentExtensionInfo>();
 	
 	public static int Size { get; private set; }
 
@@ -62,6 +63,7 @@ public static class ComponentRegistry
 		var id = Size + 1;
 		meta = new ComponentType(id, typeSize);
 		_typeToComponentType.Add(type, meta);
+		ExtensionInfos.Add(type, ComponentExtensionInfo.Create(type, meta));
 		_types = _types.Add(id, type);
 
 		Size++;
@@ -147,6 +149,12 @@ public static class ComponentRegistry
 	{
 		return TypeToComponentType.TryGetValue(type, out componentType);
 	}
+	
+	public static unsafe object Cast(Slice<byte> bytes, Type type)
+	{
+		return ExtensionInfos[type].Cast(bytes);
+	}
+
 
 	private static int SizeOf<T>()
 	{
@@ -165,6 +173,7 @@ public static class ComponentRegistry
 
 		return IntPtr.Size;
 	}
+	
 	
 }
 
@@ -208,8 +217,38 @@ public static class Component
 		hashCode.AddSlice(slice);
 		return hashCode.ToHashCode();
 	}
+}
+
+public unsafe class ComponentExtensionInfo
+{
+
+	public static ComponentExtensionInfo Create(Type type, ComponentType typeInfo)
+	{
+		return new ComponentExtensionInfo(type, typeInfo);
+	}
+
+	private ComponentExtensionInfo(Type type, ComponentType typeInfo)
+	{
+		Caster = ptr => {
+			var obj = Activator.CreateInstance(type);
+			if (obj == null)
+			{
+				throw new Exception($"Failed to create instance of type {type}");
+			}
+			Unsafe.CopyBlock(Unsafe.AsPointer(ref obj), (void*)ptr, (uint)typeInfo.ByteSize);
+			return Unsafe.AsRef<object>((void*)ptr);
+		};
+	}
+	
+	public object Cast(Slice<byte> bytes)
+	{
+		return Caster(new IntPtr(bytes.FirstItem));
+	}
 	
 	
+	private readonly Func<IntPtr, object> Caster;
+
+
 }
 
 public static class Component<T>
@@ -218,6 +257,7 @@ public static class Component<T>
 	public static readonly ComponentType ComponentType;
 
 	public static readonly Signature Signature;
+	
 	static Component()
 	{
 		ComponentType = ComponentRegistry.Add<T>();

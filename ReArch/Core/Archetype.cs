@@ -113,7 +113,7 @@ public sealed unsafe partial  class Archetype
 		int i = 0;
 		foreach (var componentType in signature.Components)
 		{
-			var componentChunkArray = new ChunkArray(componentType.ByteSize, entityCountInChunk, initialCapacity);
+			var componentChunkArray = ArrayRegistry.GetArray(componentType, entityCountInChunk, initialCapacity);
 			Components [i] = componentChunkArray;
 			i++;
 		}
