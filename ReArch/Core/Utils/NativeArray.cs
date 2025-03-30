@@ -8,6 +8,7 @@ public class NativeArray
 {
 	
 	protected IntPtr NativeArrayPtr = IntPtr.Zero;
+	protected readonly IntPtr FirstItemPtr;
 	private bool _disposed = false;
 	
 	/// <summary>
@@ -39,6 +40,8 @@ public class NativeArray
 
 		ItemSize = itemSize;
 		Count = count;
+		FirstItemPtr = Count != 0 ?NativeArray_Get(NativeArrayPtr, 0) : IntPtr.Zero;
+
 	}
 	
 	/// <summary>
@@ -156,13 +159,14 @@ public unsafe class NativeArray<T> : NativeArray, IDisposable where T : unmanage
 	{
 		get
 		{
+#if DEBUG
 			if (index < 0 || index >= Count)
 				throw new IndexOutOfRangeException($"Index {index} is out of range [0, {Count - 1}]");
 				
 			if (!IsValid)
 				throw new InvalidOperationException("Native array is not valid");
-				
-			IntPtr ptr = NativeArray_Get(NativeArrayPtr, index);
+#endif
+			IntPtr ptr = FirstItemPtr + index * ItemSize; 
 			if (ptr == IntPtr.Zero)
 			{
 				return default;
@@ -171,13 +175,20 @@ public unsafe class NativeArray<T> : NativeArray, IDisposable where T : unmanage
 		}
 		set
 		{
+#if DEBUG
 			if (index < 0 || index >= Count)
 				throw new IndexOutOfRangeException($"Index {index} is out of range [0, {Count - 1}]");
 				
 			if (!IsValid)
 				throw new InvalidOperationException("Native array is not valid");
-			
-			NativeArray_Set(NativeArrayPtr, index, new IntPtr(&value));
+#endif	
+			IntPtr ptr = FirstItemPtr + index * ItemSize;
+			if (ptr == IntPtr.Zero)
+			{
+				return;
+			}
+			var targetPtr = (T*) ptr.ToPointer();
+			*targetPtr = value;
 		}
 	}
 	

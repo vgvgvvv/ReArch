@@ -178,15 +178,37 @@ public static class Component
 		return !ComponentRegistry.TryGet(type, out var index) ? ComponentRegistry.Add(type) : index;
 	}
 
-	public static int GetHashCode(NativeArray<ComponentType> obj)
+	public static unsafe int GetHashCode(Slice<ComponentType> componentTypes)
 	{
-		
+		var highestId = 0;
+		foreach (ref var cmp in componentTypes)
+		{
+			if (cmp.Id > highestId)
+			{
+				highestId = cmp.Id;
+			}
+		}
+
+		var length = BitSet.RequiredLength(highestId);
+		uint* data = stackalloc uint[length];
+		var slice = new Slice<uint>(data, length);
+		var sliceBitset = new SliceBitSet(slice, highestId);
+		foreach (ref var type in componentTypes)
+		{
+			var x = type.Id;
+			sliceBitset.SetBit(x);
+		}
+
+		return GetHashCode(slice);
 	}
 
-	public static int GetHashCode(NativeArray<uint> span)
+	public static int GetHashCode(Slice<uint> span)
 	{
-		
+		var hashCode = new HashCode();
+		hashCode.AddSlice(span);
+		return hashCode.ToHashCode();
 	}
+	
 	
 }
 
@@ -196,5 +218,9 @@ public static class Component<T>
 	public static readonly ComponentType ComponentType;
 
 	public static readonly Signature Signature;
-	
+	static Component()
+	{
+		ComponentType = ComponentRegistry.Add<T>();
+		Signature = new Signature(ComponentType);
+	}
 }
