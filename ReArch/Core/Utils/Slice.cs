@@ -43,6 +43,16 @@ public unsafe ref struct Slice<T> where T : unmanaged
 			ItemSize = Unsafe.SizeOf<T>();
 		}
 	}
+	
+	public Slice(Span<T> span)
+	{
+		fixed (T* firstItem = span)
+		{
+			FirstItem = firstItem;
+			Length = span.Length;
+			ItemSize = Unsafe.SizeOf<T>();
+		}
+	}
 
 	public Slice(T* firstItem, int length)
 	{
@@ -97,6 +107,41 @@ public unsafe ref struct Slice<T> where T : unmanaged
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)] get => ref this._slice[this._index];
 		}
+	}
+	
+	public static implicit operator Slice<T>(T[] arr)
+	{
+		return new Slice<T>(arr);
+	}
+	
+	public static implicit operator Slice<T>(Span<T> span)
+	{
+		return new Slice<T>(span);
+	}
+
+	public static implicit operator T[](Slice<T> slice)
+	{
+		return slice.ToArray();
+	}
+	
+	public static implicit operator Span<T>(Slice<T> slice)
+	{
+		return slice.ToSpan();
+	}
+
+	public T[] ToArray()
+	{
+		var arr = new T [Length];
+		for (var i = 0; i < Length; i++)
+		{
+			arr [i] = this [i];
+		}
+		return arr;
+	}
+
+	public Span<T> ToSpan()
+	{
+		return new Span<T>(FirstItem, Length);
 	}
 
 }

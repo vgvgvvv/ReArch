@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2017
 VisualStudioVersion = 17.0.31314.256
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{e97ee1d3-43c9-4878-8b5c-fff9f55bee7a}") = "CompileRules", "Intermedia\CppBuildRule\Project\CompileRules.csproj", "{e97ee1d3-43c9-4878-8b5c-fff9f55bee7a}"
+Project("{7df4bc5c-8b26-4f24-9d4d-d3ea45cf9d5b}") = "CompileRules", "Intermedia\CppBuildRule\Project\CompileRules.csproj", "{7df4bc5c-8b26-4f24-9d4d-d3ea45cf9d5b}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|AnyCPU = Release|AnyCPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{e97ee1d3-43c9-4878-8b5c-fff9f55bee7a}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{e97ee1d3-43c9-4878-8b5c-fff9f55bee7a}.Debug|x64.Build.0 = Debug|Any CPU
-		{e97ee1d3-43c9-4878-8b5c-fff9f55bee7a}.Release|x64.ActiveCfg = Release|Any CPU
-		{e97ee1d3-43c9-4878-8b5c-fff9f55bee7a}.Release|x64.Build.0 = Release|Any CPU
+		{7df4bc5c-8b26-4f24-9d4d-d3ea45cf9d5b}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7df4bc5c-8b26-4f24-9d4d-d3ea45cf9d5b}.Debug|x64.Build.0 = Debug|Any CPU
+		{7df4bc5c-8b26-4f24-9d4d-d3ea45cf9d5b}.Release|x64.ActiveCfg = Release|Any CPU
+		{7df4bc5c-8b26-4f24-9d4d-d3ea45cf9d5b}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

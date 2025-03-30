@@ -202,10 +202,10 @@ public static class Component
 		return GetHashCode(slice);
 	}
 
-	public static int GetHashCode(Slice<uint> span)
+	public static int GetHashCode(Slice<uint> slice)
 	{
 		var hashCode = new HashCode();
-		hashCode.AddSlice(span);
+		hashCode.AddSlice(slice);
 		return hashCode.ToHashCode();
 	}
 	

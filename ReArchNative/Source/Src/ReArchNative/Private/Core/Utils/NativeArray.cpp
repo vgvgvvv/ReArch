@@ -1,5 +1,6 @@
 #include "Core/Utils/NativeArray.h"
-#include <memory>
+
+#include <Alloc.h>
 
 /**
  * 创建一个新的NativeArray
@@ -9,10 +10,10 @@
  */
 NativeArray* NativeArray_Create(int32 itemSize, int32 itemCount)
 {
-    NativeArray* array = new NativeArray();
+    NativeArray* array = NEW(NativeArray);
     array->itemSize = itemSize;
     array->size = itemCount;
-    array->data = new uint8[itemSize * itemCount]();
+    array->data =  NEW_ARRAY(uint8, itemSize * itemCount);
     return array;
 }
 
@@ -26,10 +27,10 @@ void NativeArray_Destroy(NativeArray* array)
     {
         if (array->data)
         {
-            delete[] array->data;
+            SAFE_DELETE_ARRAY(array->data);
             array->data = nullptr;
         }
-        delete array;
+        SAFE_DELETE(array)
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace ReArch.Core.Utils;
@@ -10,6 +11,8 @@ public sealed class BitSet : IDisposable
 {
 	private const int BitSize = (sizeof(uint) * 8) - 1;           // 31
 	private const int IndexSize = 5;                              // log_2(BitSize + 1)
+	private static readonly int _padding = Vector<uint>.Count;
+	
 	public static int RequiredLength(int id)
 	{
 		return (int)Math.Ceiling((float)id / BitSize);
@@ -28,8 +31,8 @@ public sealed class BitSet : IDisposable
 	/// 获取最高位的索引（即位集合的容量-1）
 	/// </summary>
 	public int HighestBit => _highestBit;
-	
-	
+
+
 	/// <summary>
 	/// 创建一个新的BitSet实例
 	/// </summary>

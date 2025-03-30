@@ -43,52 +43,52 @@ namespace ReArch.Core
 		}
 		
 		public bool Equals(Entity other)
-    {
-        return ((Id ^ other.Id) | (WorldId ^ other.WorldId) | (Version ^ other.Version)) == 0;
-    }
+	    {
+	        return ((Id ^ other.Id) | (WorldId ^ other.WorldId) | (Version ^ other.Version)) == 0;
+	    }
 
 
-    public override bool Equals(object? obj)
-    {
-        return obj is Entity other && Equals(other);
-    }
+	    public override bool Equals(object? obj)
+	    {
+	        return obj is Entity other && Equals(other);
+	    }
 
 
-    public int CompareTo(Entity other)
-    {
-        return (WorldId.CompareTo(other.WorldId) << 16) | (Version.CompareTo(other.Version) << 8) | Id.CompareTo(other.Id);
-    }
+	    public int CompareTo(Entity other)
+	    {
+	        return (WorldId.CompareTo(other.WorldId) << 16) | (Version.CompareTo(other.Version) << 8) | Id.CompareTo(other.Id);
+	    }
 
 
-    public override int GetHashCode()
-    {
-        unchecked
-        {
-            // Overflow is fine, just wrap
-            var hash = 17;
-            hash = (hash * 23) + Id;
-            hash = (hash * 23) + WorldId;
-            hash = (hash * 23) + Version;
-            return hash;
-        }
-    }
+	    public override int GetHashCode()
+	    {
+	        unchecked
+	        {
+	            // Overflow is fine, just wrap
+	            var hash = 17;
+	            hash = (hash * 23) + Id;
+	            hash = (hash * 23) + WorldId;
+	            hash = (hash * 23) + Version;
+	            return hash;
+	        }
+	    }
 
-    public static bool operator ==(Entity left, Entity right)
-    {
-        return left.Equals(right);
-    }
-
-
-    public static bool operator !=(Entity left, Entity right)
-    {
-        return !left.Equals(right);
-    }
+	    public static bool operator ==(Entity left, Entity right)
+	    {
+	        return left.Equals(right);
+	    }
 
 
-    public override string ToString()
-    {
-        return $"Entity = {{ {nameof(Id)} = {Id}, {nameof(WorldId)} = {WorldId}, {nameof(Version)} = {Version} }}";
-    }
+	    public static bool operator !=(Entity left, Entity right)
+	    {
+	        return !left.Equals(right);
+	    }
+
+
+	    public override string ToString()
+	    {
+	        return $"Entity = {{ {nameof(Id)} = {Id}, {nameof(WorldId)} = {WorldId}, {nameof(Version)} = {Version} }}";
+	    }
 
 	}
 }
