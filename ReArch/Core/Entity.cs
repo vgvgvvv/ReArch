@@ -1,7 +1,21 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace ReArch.Core
 {
+	
+	[SkipLocalsInit]
+	internal record struct RecycledEntityGUID
+	{
+		public readonly int Id;
+		public readonly int Version;
+		public RecycledEntityGUID(int id, int version)
+		{
+			Id = id;
+			Version = version;
+		}
+	}
+	
 	public partial struct Entity
 	{
 

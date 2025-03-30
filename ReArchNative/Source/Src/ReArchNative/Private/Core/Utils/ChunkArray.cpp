@@ -312,3 +312,121 @@ void ChunkArray_Remove(ChunkArray* arr, int32 index)
     chunk->ItemCount--;
     arr->ItemCount--;
 }
+
+void ChunkArray_EnsureCapacity(ChunkArray* arr, int32 count)
+{
+    if (!arr || count <= 0)
+    {
+        return;
+    }
+    
+    // 计算每个块可容纳的元素数量
+    int32 itemsPerChunk = arr->ChunkSizeInBytes / arr->ItemSizeInByte;
+    if (itemsPerChunk <= 0)
+    {
+        return;
+    }
+    
+    // 计算需要的块数量
+    int32 requiredChunks = (count + itemsPerChunk - 1) / itemsPerChunk; // 向上取整
+    
+    // 如果已有足够的块，直接返回
+    if (requiredChunks <= arr->ChunkCount)
+    {
+        return;
+    }
+    
+    // 创建新的Chunks数组
+    Chunk* newChunks = NEW_ARRAY(Chunk, requiredChunks);
+    
+    // 复制现有块
+    if (arr->Chunks)
+    {
+        memcpy(newChunks, arr->Chunks, arr->ChunkCount * sizeof(Chunk));
+    }
+    
+    // 初始化新增的块
+    for (int32 i = arr->ChunkCount; i < requiredChunks; ++i)
+    {
+        newChunks[i].ItemSize = arr->ItemSizeInByte;
+        newChunks[i].ItemCount = 0;
+        newChunks[i].Data = NEW_ARRAY(uint8, arr->ChunkSizeInBytes);
+    }
+    
+    // 释放旧的Chunks数组
+    if (arr->Chunks)
+    {
+        DELETE_ARRAY(arr->Chunks);
+    }
+    
+    // 更新ChunkArray
+    arr->Chunks = newChunks;
+    arr->ChunkCount = requiredChunks;
+}
+
+void ChunkArray_TrimExcess(ChunkArray* arr)
+{
+    if (!arr || arr->ChunkCount <= 0)
+    {
+        return;
+    }
+    
+    // 计算每个块可容纳的元素数量
+    int32 itemsPerChunk = arr->ChunkSizeInBytes / arr->ItemSizeInByte;
+    if (itemsPerChunk <= 0)
+    {
+        return;
+    }
+    
+    // 计算实际需要的块数量（向上取整）
+    int32 usedChunks = (arr->ItemCount + itemsPerChunk - 1) / itemsPerChunk;
+    if (usedChunks <= 0)
+    {
+        usedChunks = 1; // 至少保留一个块
+    }
+    
+    // 如果没有多余的块，直接返回
+    if (usedChunks >= arr->ChunkCount)
+    {
+        return;
+    }
+    
+    // 创建新的Chunks数组
+    Chunk* newChunks = NEW_ARRAY(Chunk, usedChunks);
+    
+    // 复制使用中的块
+    memcpy(newChunks, arr->Chunks, usedChunks * sizeof(Chunk));
+    
+    // 释放多余块的数据内存
+    for (int32 i = usedChunks; i < arr->ChunkCount; ++i)
+    {
+        if (arr->Chunks[i].Data)
+        {
+            DELETE_ARRAY(arr->Chunks[i].Data);
+        }
+    }
+    
+    // 释放旧的Chunks数组
+    DELETE_ARRAY(arr->Chunks);
+    
+    // 更新ChunkArray
+    arr->Chunks = newChunks;
+    arr->ChunkCount = usedChunks;
+}
+
+void ChunkArray_Clear(ChunkArray* arr)
+{
+    if (!arr)
+    {
+        return;
+    }
+    
+    // 重置所有块的元素计数
+    for (int32 i = 0; i < arr->ChunkCount; ++i)
+    {
+        arr->Chunks[i].ItemCount = 0;
+    }
+    
+    // 重置总元素计数
+    arr->ItemCount = 0;
+}

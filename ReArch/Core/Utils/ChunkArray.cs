@@ -177,6 +177,33 @@ public unsafe class ChunkArray : IDisposable
 		ChunkArrayDllImport.ChunkArray_Remove(_nativeArray, index);
 	}
 	
+	public void EnsureCapacity(int count)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (count < 0)
+			throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative");
+			
+		ChunkArrayDllImport.ChunkArray_EnsureCapacity(_nativeArray, count);
+	}
+	
+	public void TrimExcess()
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		ChunkArrayDllImport.ChunkArray_TrimExcess(_nativeArray);
+	}
+	
+	public void Clear()
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		ChunkArrayDllImport.ChunkArray_Clear(_nativeArray);
+	}
+	
 	/// <summary>
 	/// 释放资源
 	/// </summary>
@@ -259,6 +286,8 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 	{
 		get => Get(index);
 	}
+	
+	
 	
 	/// <summary>
 	/// 将数组中的元素复制到目标数组
@@ -348,4 +377,10 @@ internal unsafe static class ChunkArrayDllImport
 	public static extern void* ChunkArray_Get(ChunkArray_Native* arr, int index);
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_Remove(ChunkArray_Native* arr, int index);
+	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern void ChunkArray_EnsureCapacity(ChunkArray_Native* arr, int count);
+	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern void ChunkArray_TrimExcess(ChunkArray_Native* arr);
+	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern void ChunkArray_Clear(ChunkArray_Native* arr);
 }

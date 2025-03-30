@@ -94,7 +94,7 @@ public class Archetype
 
 	public ChunkArray<Entity> Entities { get; }
 	public ChunkArray[] Components { get; }
-	public int EntitiesPreChunk { get; }
+	public int EntitiesPerChunk { get; }
 	public Signature Signature { get; }
 	public BitSet BitSet { get; }
 	
@@ -107,7 +107,7 @@ public class Archetype
 	internal Archetype(Signature signature, int entityCountInChunk, int initialCapacity)
 	{
 		Signature = signature;
-		EntitiesPreChunk = entityCountInChunk;
+		EntitiesPerChunk = entityCountInChunk;
 		Entities = new ChunkArray<Entity>(entityCountInChunk, initialCapacity);
 		Components = new ChunkArray[signature.Count];
 		int i = 0;
@@ -131,4 +131,8 @@ public class Archetype
 	// Has Component
 	// GetComponent
 
+	public void Clear()
+	{
+		EntityCount = 0;
+	}
 }

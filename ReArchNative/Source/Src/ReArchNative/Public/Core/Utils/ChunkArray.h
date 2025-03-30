@@ -35,4 +35,7 @@ extern "C"
     REARCHNATIVEMODULE_API int32 ChunkArray_Add(ChunkArray* arr, void* item);
     REARCHNATIVEMODULE_API void* ChunkArray_Get(ChunkArray* arr, int32 index);
     REARCHNATIVEMODULE_API void ChunkArray_Remove(ChunkArray* arr, int32 index);
+    REARCHNATIVEMODULE_API void ChunkArray_EnsureCapacity(ChunkArray* arr, int32 count);
+    REARCHNATIVEMODULE_API void ChunkArray_TrimExcess(ChunkArray* arr);
+    REARCHNATIVEMODULE_API void ChunkArray_Clear(ChunkArray* arr);
 }

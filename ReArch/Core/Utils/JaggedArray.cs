@@ -34,7 +34,7 @@ public class JaggedChunk<T>
 /// <summary>
 /// 托管分块数组，提供对大量托管对象的高效存储和访问
 /// 不需要unmanaged约束，可以存储任何类型的对象
-/// 移除元素时不移动数据，而是标记位置为可重用
+/// 移除元素时不移动数据，而是标记位置为无效
 /// </summary>
 /// <typeparam name="T">元素类型，可以是任何类型</typeparam>
 public class JaggedArray<T> : IEnumerable<T>, IDisposable
@@ -46,7 +46,6 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 	private int _validCount;         // 有效元素数量
 	private bool _disposed;
 	private T _defaultValue;
-	private Stack<int> _reuseIndexes; // 存储可重用的索引位置
 	
 	/// <summary>
 	/// 获取数组中有效元素的数量
@@ -88,7 +87,6 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 		_totalCount = 0;
 		_validCount = 0;
 		_defaultValue = defaultValue;
-		_reuseIndexes = new Stack<int>();
 		
 		// 初始化所有块
 		for (int i = 0; i < initialChunkCount; i++)
@@ -114,42 +112,51 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 	}
 	
 	/// <summary>
-	/// 向数组中添加元素，优先使用已删除的位置
+	/// 设置或添加元素
 	/// </summary>
 	/// <param name="item">要添加的元素</param>
 	/// <returns>新添加元素的索引</returns>
-	public int Add(T item)
+	public int SetOrAdd(T item)
 	{
-		int index;
-		
-		// 检查是否有可重用的索引
-		if (_reuseIndexes.Count > 0)
+		var id = GetFirstEmptyIndex();
+		if (id != -1)
 		{
-			// 使用之前删除的位置
-			index = _reuseIndexes.Pop();
-			Set(index, item);
-		}
-		else
-		{
-			// 没有可重用位置，添加到末尾
-			EnsureCapacity(_totalCount + 1);
-			
-			// 计算目标块和块内索引
-			int chunkIndex = _totalCount / _countInChunk;
-			int indexInChunk = _totalCount % _countInChunk;
-			
-			// 设置数据和有效性标志
-			JaggedChunk<T> chunk = _chunks[chunkIndex];
-			chunk.Data[indexInChunk] = item;
-			chunk.IsValid[indexInChunk] = true;
-			chunk.ItemCount++;
-			
-			index = _totalCount;
-			_totalCount++;
+			Set(id, item);
+			return id;
 		}
 		
+		// 添加到末尾
+		EnsureCapacity(_totalCount + 1);
+		
+		// 计算目标块和块内索引
+		int chunkIndex = _totalCount / _countInChunk;
+		int indexInChunk = _totalCount % _countInChunk;
+		
+		// 设置数据和有效性标志
+		JaggedChunk<T> chunk = _chunks[chunkIndex];
+		chunk.Data[indexInChunk] = item;
+		chunk.IsValid[indexInChunk] = true;
+		chunk.ItemCount++;
+		
+		int index = _totalCount;
+		_totalCount++;
 		_validCount++;
 		return index;
+	}
+
+
+	/// <summary>
+	/// 获取第一个空闲位置的索引
+	/// </summary>
+	/// <returns>第一个空闲位置的索引，如果未找到则返回-1</returns>
+	public int GetFirstEmptyIndex()
+	{
+		for (int i = 0; i < _totalCount; i++)
+		{
+			if (!IsValid(i)) 
+				return i;
+		}
+		return -1;
 	}
 	
 	/// <summary>
@@ -174,17 +181,21 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 		// 返回元素
 		return ref chunk.Data[indexInChunk];
 	}
-	
+
 	/// <summary>
 	/// 安全获取指定索引处的元素，如果已删除则返回默认值
 	/// </summary>
 	/// <param name="index">元素的索引</param>
+	/// <param name="result">输出参数，用于返回元素值</param>
 	/// <param name="defaultValueIfRemoved">如果元素已被删除，返回的默认值</param>
-	/// <returns>指定索引处的元素或默认值</returns>
-	public T TryGet(int index, T defaultValueIfRemoved = default)
+	/// <returns>如果索引有效，返回true，否则返回false</returns>
+	public bool TryGet(int index, out T result, T defaultValueIfRemoved = default)
 	{
 		if (index < 0 || index >= _totalCount)
-			return defaultValueIfRemoved;
+		{
+			result = defaultValueIfRemoved;
+			return false;
+		}
 			
 		// 计算块索引和块内索引
 		int chunkIndex = index / _countInChunk;
@@ -192,11 +203,15 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 		
 		// 检查该位置是否有效
 		JaggedChunk<T> chunk = _chunks[chunkIndex];
-		if (!chunk.IsValid[indexInChunk])
-			return defaultValueIfRemoved;
+		if (!chunk.IsValid [indexInChunk])
+		{
+			result = defaultValueIfRemoved;
+			return false;
+		}
 		
 		// 返回元素
-		return chunk.Data[indexInChunk];
+		result = chunk.Data[indexInChunk];
+		return true;
 	}
 	
 	/// <summary>
@@ -245,7 +260,7 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 	}
 	
 	/// <summary>
-	/// 移除指定索引处的元素，不移动其他元素
+	/// 移除指定索引处的元素，标记为无效
 	/// </summary>
 	/// <param name="index">要移除的元素的索引</param>
 	public void Remove(int index)
@@ -268,9 +283,6 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 		chunk.Data[indexInChunk] = _defaultValue;
 		chunk.IsValid[indexInChunk] = false;
 		chunk.ItemCount--;
-		
-		// 将该索引添加到可重用索引栈中
-		_reuseIndexes.Push(index);
 		
 		// 更新有效元素计数
 		_validCount--;
@@ -296,10 +308,9 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 			chunk.ItemCount = 0;
 		}
 		
-		// 重置计数和可重用索引栈
+		// 重置计数
 		_totalCount = 0;
 		_validCount = 0;
-		_reuseIndexes.Clear();
 	}
 	
 	/// <summary>
@@ -373,7 +384,7 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 		// 添加元素
 		foreach (T item in array)
 		{
-			result.Add(item);
+			result.SetOrAdd(item);
 		}
 		
 		return result;
@@ -493,7 +504,6 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 				// 清除所有引用，帮助GC
 				Clear();
 				_chunks = null;
-				_reuseIndexes = null;
 			}
 			
 			_disposed = true;

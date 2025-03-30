@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 using ReArch.Core.Utils;
@@ -9,7 +10,7 @@ namespace ReArch.Core;
 public struct EntityData
 {
 	public Archetype Archetype;
-	public int Index;
+	public int Index; // index in Archetype
 	
 	public EntityData(Archetype archetype, int index)
 	{
@@ -30,8 +31,36 @@ internal class EntityInfoStorage
 			new EntityData(null, -1));
 	}
 	
-	// TODO:
-	// Add Has
+	
+	public void Add(int id, Archetype archetype, int index)
+	{
+		EntityDatas.Set(id, new EntityData(archetype, index));
+	}
+	
+	public bool Has(int id)
+	{
+		return EntityDatas.TryGet(id, out EntityData _);
+	}
+	
+	public Archetype GetArchetype(int id)
+	{
+	    return EntityDatas[id].Archetype;
+	}
+	
+	public ref int GetSlot(int id)
+	{
+		return ref EntityDatas[id].Index;
+	}
+	
+	public EntityData GetEntitySlot(int id)
+	{
+		return EntityDatas[id];
+	}
+	
+	public void Remove(int id)
+	{
+		EntityDatas.Remove(id);
+	}
 	
 	public void EnsureCapacity(int capacity)
 	{
