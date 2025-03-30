@@ -28,7 +28,7 @@ extern "C"
         Chunk* Chunks;
     };
 
-    REARCHNATIVEMODULE_API ChunkArray* ChunkArray_Create(int32 chunkCount, int32 itemSize, int32 capcity);
+    REARCHNATIVEMODULE_API ChunkArray* ChunkArray_Create(int32 countInChunk, int32 itemSize, int32 capcity);
     REARCHNATIVEMODULE_API void ChunkArray_Destroy(ChunkArray* arr);
     REARCHNATIVEMODULE_API int32 ChunkArray_GetItemCount(ChunkArray* arr);
     REARCHNATIVEMODULE_API int32 ChunkArray_GetItemSize(ChunkArray* arr);

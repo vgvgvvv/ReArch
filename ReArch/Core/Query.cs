@@ -3,6 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
+using Arch.Core.Extensions.Internal;
+
 using Collections.Pooled;
 
 using ReArch.Core.Utils;
@@ -136,6 +138,14 @@ public struct Signature : IEquatable<Signature>
     public static implicit operator Slice<ComponentType>(Signature signature)
     {
         return signature.Components;
+    }
+
+    public BitSet ToBitSet()
+    {
+        int max = ComponentsArray.Max(x => x.Id);
+        var bitSet = new BitSet(max);
+        bitSet.SetBits(Components);
+        return bitSet;
     }
 }
 

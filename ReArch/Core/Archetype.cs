@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Arch.Core.Extensions.Internal;
+
 using Collections.Pooled;
 
 using ReArch.Core.Utils;
@@ -87,5 +89,46 @@ public class Archetypes : IDisposable
 public class Archetype
 {
 	private readonly int[] _componentIdToArrayIndex;
+	
+	internal int[] LookupArray => _componentIdToArrayIndex;
+
+	public ChunkArray<Entity> Entities { get; }
+	public ChunkArray[] Components { get; }
+	public int EntitiesPreChunk { get; }
+	public Signature Signature { get; }
+	public BitSet BitSet { get; }
+	
+	public int EntityCount
+	{
+		get;
+		internal set;
+	}
+
+	internal Archetype(Signature signature, int entityCountInChunk, int initialCapacity)
+	{
+		Signature = signature;
+		EntitiesPreChunk = entityCountInChunk;
+		Entities = new ChunkArray<Entity>(entityCountInChunk, initialCapacity);
+		Components = new ChunkArray[signature.Count];
+		int i = 0;
+		foreach (var componentType in signature.Components)
+		{
+			var componentChunkArray = new ChunkArray(componentType.ByteSize, entityCountInChunk, initialCapacity);
+			Components [i] = componentChunkArray;
+			i++;
+		}
+
+		// The bitmask/set
+		BitSet = signature.ToBitSet();
+		_componentIdToArrayIndex = signature.Components.ToLookupArray();
+	}
+
+	// TODO: Implement
+	// Add Entity
+	// Add All Entities
+	// Remove Entity
+	// Get Entity
+	// Has Component
+	// GetComponent
 
 }

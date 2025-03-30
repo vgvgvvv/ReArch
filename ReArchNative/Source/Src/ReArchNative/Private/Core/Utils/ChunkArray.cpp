@@ -4,14 +4,14 @@
 
 /**
  * 创建一个新的ChunkArray
- * @param chunkCount 每个块中可容纳的元素数量
+ * @param countInChunk 每个块中可容纳的元素数量
  * @param itemSize 每个元素的大小（字节）
  * @param capacity 初始预分配的块数量
  * @return 新创建的ChunkArray指针
  */
-ChunkArray* ChunkArray_Create(int32 chunkCount, int32 itemSize, int32 capacity)
+ChunkArray* ChunkArray_Create(int32 countInChunk, int32 itemSize, int32 capacity)
 {
-    if (chunkCount <= 0 || capacity <= 0)
+    if (countInChunk <= 0 || capacity <= 0)
     {
         return nullptr;
     }
@@ -21,7 +21,7 @@ ChunkArray* ChunkArray_Create(int32 chunkCount, int32 itemSize, int32 capacity)
     arr->ItemSizeInByte = itemSize; // 设置元素大小
     arr->ChunkCount = capacity;
     arr->ItemCount = 0;
-    arr->ChunkSizeInBytes = chunkCount * itemSize;
+    arr->ChunkSizeInBytes = countInChunk * itemSize;
     
     // 分配Chunks数组
     arr->Chunks = NEW_ARRAY(Chunk, capacity);

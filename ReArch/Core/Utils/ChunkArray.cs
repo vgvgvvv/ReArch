@@ -17,7 +17,7 @@ internal unsafe struct Chunk
 	void* Data;
 };
 
-internal unsafe struct ChunkArray
+internal unsafe struct ChunkArray_Native
 {
 	int ItemSizeInByte;
 	int ItemCount;
@@ -30,10 +30,9 @@ internal unsafe struct ChunkArray
 /// <summary>
 /// 分块数组，提供对原生ChunkArray的C#包装，适用于大规模数据的高效存储和访问
 /// </summary>
-/// <typeparam name="T">必须是非托管类型</typeparam>
-public sealed unsafe class ChunkArray<T> : IDisposable where T : unmanaged
+public unsafe class ChunkArray : IDisposable
 {
-	private ChunkArray* _nativeArray;
+	private ChunkArray_Native* _nativeArray;
 	private bool _disposed = false;
 	
 	/// <summary>
@@ -47,20 +46,33 @@ public sealed unsafe class ChunkArray<T> : IDisposable where T : unmanaged
 	public int Count => IsValid ? ChunkArrayDllImport.ChunkArray_GetItemCount(_nativeArray) : 0;
 	
 	/// <summary>
+	/// 获取元素的大小（字节）
+	/// </summary>
+	public int ItemSize => IsValid ? ChunkArrayDllImport.ChunkArray_GetItemSize(_nativeArray) : 0;
+	
+	/// <summary>
+	/// 获取原生ChunkArray指针
+	/// </summary>
+	internal ChunkArray_Native* NativeArrayPtr => _nativeArray;
+	
+	/// <summary>
 	/// 创建一个新的ChunkArray实例
 	/// </summary>
-	/// <param name="chunkSize">每个块中可容纳的元素数量</param>
+	/// <param name="itemSize">元素大小（字节）</param>
+	/// <param name="countInChunk">每个块中可容纳的元素数量</param>
 	/// <param name="initialCapacity">初始预分配的块数量</param>
-	public ChunkArray(int chunkSize, int initialCapacity)
+	public ChunkArray(int itemSize, int countInChunk, int initialCapacity)
 	{
-		if (chunkSize <= 0)
-			throw new ArgumentException("Chunk size must be greater than zero", nameof(chunkSize));
+		if (itemSize <= 0)
+			throw new ArgumentException("Item size must be greater than zero", nameof(itemSize));
+			
+		if (countInChunk <= 0)
+			throw new ArgumentException("Chunk size must be greater than zero", nameof(countInChunk));
 			
 		if (initialCapacity <= 0)
 			throw new ArgumentException("Initial capacity must be greater than zero", nameof(initialCapacity));
 			
-		int itemSize = Unsafe.SizeOf<T>();
-		_nativeArray = ChunkArrayDllImport.ChunkArray_Create(chunkSize, itemSize, initialCapacity);
+		_nativeArray = ChunkArrayDllImport.ChunkArray_Create(countInChunk, itemSize, initialCapacity);
 		
 		if (_nativeArray == null)
 			throw new InvalidOperationException("Failed to create chunk array");
@@ -69,22 +81,45 @@ public sealed unsafe class ChunkArray<T> : IDisposable where T : unmanaged
 	/// <summary>
 	/// 向数组中添加元素
 	/// </summary>
-	/// <param name="item">要添加的元素</param>
+	/// <param name="itemPtr">指向要添加元素的指针</param>
 	/// <returns>新添加元素的索引，失败返回-1</returns>
-	public int Add(T item)
+	public int AddUnsafe(void* itemPtr)
 	{
 		if (!IsValid)
 			throw new InvalidOperationException("Chunk array is not valid");
-		
-		return ChunkArrayDllImport.ChunkArray_Add(_nativeArray, &item);
+			
+		if (itemPtr == null)
+			throw new ArgumentNullException(nameof(itemPtr));
+			
+		return ChunkArrayDllImport.ChunkArray_Add(_nativeArray, itemPtr);
+	}
+	
+	
+	/// <summary>
+	/// 向数组中添加元素
+	/// </summary>
+	/// <param name="data">包含要添加元素数据的Span</param>
+	/// <returns>新添加元素的索引，失败返回-1</returns>
+	public int Add(ReadOnlySpan<byte> data)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (data.Length != ItemSize)
+			throw new ArgumentException($"Data length ({data.Length}) does not match item size ({ItemSize})", nameof(data));
+			
+		fixed (byte* dataPtr = data)
+		{
+			return ChunkArrayDllImport.ChunkArray_Add(_nativeArray, dataPtr);
+		}
 	}
 	
 	/// <summary>
-	/// 获取指定索引处的元素
+	/// 获取指定索引处的元素指针
 	/// </summary>
 	/// <param name="index">元素的索引</param>
-	/// <returns>指定索引处的元素</returns>
-	public T Get(int index)
+	/// <returns>指向元素的指针</returns>
+	public void* GetUnsafe(int index)
 	{
 		if (!IsValid)
 			throw new InvalidOperationException("Chunk array is not valid");
@@ -96,7 +131,35 @@ public sealed unsafe class ChunkArray<T> : IDisposable where T : unmanaged
 		if (itemPtr == null)
 			throw new InvalidOperationException($"Failed to get item at index {index}");
 			
-		return *(T*)itemPtr;
+		return itemPtr;
+	}
+	
+	/// <summary>
+	/// 获取指定索引处的元素
+	/// </summary>
+	/// <param name="index">元素的索引</param>
+	/// <param name="destination">用于存储元素数据的目标缓冲区</param>
+	/// <returns>true表示成功，false表示失败</returns>
+	public bool Get(int index, Span<byte> destination)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (index < 0 || index >= Count)
+			throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range [0, {Count - 1}]");
+			
+		if (destination.Length < ItemSize)
+			throw new ArgumentException($"Destination buffer length ({destination.Length}) is less than item size ({ItemSize})", nameof(destination));
+			
+		void* itemPtr = ChunkArrayDllImport.ChunkArray_Get(_nativeArray, index);
+		if (itemPtr == null)
+			return false;
+			
+		fixed (byte* destPtr = destination)
+		{
+			Buffer.MemoryCopy(itemPtr, destPtr, destination.Length, ItemSize);
+			return true;
+		}
 	}
 	
 	/// <summary>
@@ -112,6 +175,79 @@ public sealed unsafe class ChunkArray<T> : IDisposable where T : unmanaged
 			throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range [0, {Count - 1}]");
 			
 		ChunkArrayDllImport.ChunkArray_Remove(_nativeArray, index);
+	}
+	
+	/// <summary>
+	/// 释放资源
+	/// </summary>
+	public void Dispose()
+	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
+	
+	/// <summary>
+	/// 释放资源的保护方法
+	/// </summary>
+	/// <param name="disposing">是否由Dispose方法调用</param>
+	private void Dispose(bool disposing)
+	{
+		if (!_disposed)
+		{
+			if (_nativeArray != null)
+			{
+				ChunkArrayDllImport.ChunkArray_Destroy(_nativeArray);
+				_nativeArray = null;
+			}
+			
+			_disposed = true;
+		}
+	}
+	
+	/// <summary>
+	/// 析构函数
+	/// </summary>
+	~ChunkArray()
+	{
+		Dispose(false);
+	}
+}
+
+/// <summary>
+/// 泛型分块数组，提供对原生ChunkArray的类型安全的C#包装，适用于大规模数据的高效存储和访问
+/// </summary>
+/// <typeparam name="T">必须是非托管类型</typeparam>
+public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
+{
+	/// <summary>
+	/// 创建一个新的ChunkArray实例
+	/// </summary>
+	/// <param name="countInChunk">每个块中可容纳的元素数量</param>
+	/// <param name="initialCapacity">初始预分配的块数量</param>
+	public ChunkArray(int countInChunk, int initialCapacity)
+		: base(Unsafe.SizeOf<T>(), countInChunk, initialCapacity)
+	{
+	}
+	
+	/// <summary>
+	/// 向数组中添加元素
+	/// </summary>
+	/// <param name="item">要添加的元素</param>
+	/// <returns>新添加元素的索引，失败返回-1</returns>
+	public int Add(T item)
+	{
+		return AddUnsafe(&item);
+	}
+	
+	/// <summary>
+	/// 获取指定索引处的元素
+	/// </summary>
+	/// <param name="index">元素的索引</param>
+	/// <returns>指定索引处的元素</returns>
+	public T Get(int index)
+	{
+		void* itemPtr = GetUnsafe(index);
+		return *(T*)itemPtr;
 	}
 	
 	/// <summary>
@@ -194,57 +330,22 @@ public sealed unsafe class ChunkArray<T> : IDisposable where T : unmanaged
 		
 		return chunkArray;
 	}
-	
-	/// <summary>
-	/// 释放资源
-	/// </summary>
-	public void Dispose()
-	{
-		Dispose(true);
-		GC.SuppressFinalize(this);
-	}
-	
-	/// <summary>
-	/// 释放资源的保护方法
-	/// </summary>
-	/// <param name="disposing">是否由Dispose方法调用</param>
-	protected void Dispose(bool disposing)
-	{
-		if (!_disposed)
-		{
-			if (_nativeArray != null)
-			{
-				ChunkArrayDllImport.ChunkArray_Destroy(_nativeArray);
-				_nativeArray = null;
-			}
-			
-			_disposed = true;
-		}
-	}
-	
-	/// <summary>
-	/// 析构函数
-	/// </summary>
-	~ChunkArray()
-	{
-		Dispose(false);
-	}
 }
 
 internal unsafe static class ChunkArrayDllImport
 {
 	[DllImport(DllImport.ReArchNativeDll)]
-	public static extern ChunkArray* ChunkArray_Create(int chunkCount, int itemSize, int capcity);
+	public static extern ChunkArray_Native* ChunkArray_Create(int chunkCount, int itemSize, int capcity);
 	[DllImport(DllImport.ReArchNativeDll)]
-	public static extern void ChunkArray_Destroy(ChunkArray* arr);
+	public static extern void ChunkArray_Destroy(ChunkArray_Native* arr);
 	[DllImport(DllImport.ReArchNativeDll)]
-	public static extern int ChunkArray_GetItemCount(ChunkArray* arr);
+	public static extern int ChunkArray_GetItemCount(ChunkArray_Native* arr);
 	[DllImport(DllImport.ReArchNativeDll)]
-	public static extern int ChunkArray_GetItemSize(ChunkArray* arr);
+	public static extern int ChunkArray_GetItemSize(ChunkArray_Native* arr);
 	[DllImport(DllImport.ReArchNativeDll)]
-	public static extern int ChunkArray_Add(ChunkArray* arr, void* item);
+	public static extern int ChunkArray_Add(ChunkArray_Native* arr, void* item);
 	[DllImport(DllImport.ReArchNativeDll)]
-	public static extern void* ChunkArray_Get(ChunkArray* arr, int index);
+	public static extern void* ChunkArray_Get(ChunkArray_Native* arr, int index);
 	[DllImport(DllImport.ReArchNativeDll)]
-	public static extern void ChunkArray_Remove(ChunkArray* arr, int index);
+	public static extern void ChunkArray_Remove(ChunkArray_Native* arr, int index);
 }
