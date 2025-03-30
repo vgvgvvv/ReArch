@@ -425,6 +425,46 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 		// 更新块数量
 		_chunkCount = newChunkCount;
 	}
+
+	/// <summary>
+	/// 减少内部数组容量以更好地匹配实际元素数量
+	/// </summary>
+	public void TrimExcess()
+	{
+		// 如果没有元素或者没有块，直接返回
+		if (_totalCount == 0 || _chunkCount == 0)
+			return;
+		
+		// 计算当前需要的块数量
+		int requiredChunks = (_totalCount + _countInChunk - 1) / _countInChunk;
+		
+		// 如果当前块数量超过需要的块数量，则缩减数组
+		if (_chunkCount > requiredChunks)
+		{
+			// 缩减数组
+			Array.Resize(ref _chunks, requiredChunks);
+			_chunkCount = requiredChunks;
+		}
+		
+		// 整理数据，移除末尾的无效元素
+		int lastValidIndex = -1;
+		
+		// 找到最后一个有效元素的索引
+		for (int i = _totalCount - 1; i >= 0; i--)
+		{
+			if (IsValid(i))
+			{
+				lastValidIndex = i;
+				break;
+			}
+		}
+		
+		// 如果找到了最后一个有效元素，截断_totalCount
+		if (lastValidIndex >= 0 && lastValidIndex < _totalCount - 1)
+		{
+			_totalCount = lastValidIndex + 1;
+		}
+	}
 	
 	/// <summary>
 	/// 获取数组中所有有效元素的枚举器

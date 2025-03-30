@@ -73,12 +73,20 @@ internal class EntityInfoStorage
 		data.Archetype = archetype;
 		data.Index = index;
 	}
-	
-	// TODO:public void Shift(Archetype archetype, Slot archetypeSlot, Archetype newArchetype, Slot newArchetypeSlot)
+
+	public void Shift(Archetype archetype, Slot archetypeSlot, Archetype newArchetype, Slot newArchetypeSlot)
+	{
+		// TODO: Implement
+	}
 	
 	public void EnsureCapacity(int capacity)
 	{
 		EntityDatas.EnsureCapacity(capacity);
+	}
+	
+	public void TrimExcess()
+	{
+		EntityDatas.TrimExcess();
 	}
 	
 	public void Clear()

@@ -118,6 +118,17 @@ public abstract unsafe class ChunkArray : IDisposable
 		ChunkArrayDllImport.ChunkArray_AddRange(_nativeArray, ptr, count);
 	}
 	
+	public void AddRangeDefault(int count)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (count <= 0)
+			throw new ArgumentException("Count must be greater than zero", nameof(count));
+			
+		ChunkArrayDllImport.ChunkArray_AddDefaultRange(_nativeArray, count);
+	}
+	
 	/// <summary>
 	/// 向数组中添加元素
 	/// </summary>
@@ -222,7 +233,36 @@ public abstract unsafe class ChunkArray : IDisposable
 			ChunkArrayDllImport.ChunkArray_Remove(_nativeArray, index);
 		}
 	}
+	
+	public void Set(int index, Slice<byte> data)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (index < 0 || index >= Count)
+			throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range [0, {Count - 1}]");
+			
+		if (data.Length != ItemSize)
+			throw new ArgumentException($"Data length ({data.Length}) does not match item size ({ItemSize})", nameof(data));
+			
+		ChunkArrayDllImport.ChunkArray_Set(_nativeArray, index, data.FirstItem);
+	}
 
+	public void SetRange(int index, int count, Slice<byte> data)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (index < 0 || index + count >= Count || count < 0)
+			throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range [0, {Count - 1}]");
+			
+		if (data.Length != ItemSize)
+			throw new ArgumentException($"Data length ({data.Length}) does not match item size ({ItemSize})", nameof(data));
+		
+		ChunkArrayDllImport.ChunkArray_SetRange(_nativeArray, index, count, data.FirstItem);
+	}
+
+	
 	public void EnsureCapacity(int count)
 	{
 		if (!IsValid)
@@ -332,10 +372,43 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 	/// </summary>
 	/// <param name="index">元素的索引</param>
 	/// <returns>指定索引处的元素</returns>
-	public T Get(int index)
+	public ref T Get(int index)
 	{
 		void* itemPtr = GetUnsafe(index);
-		return *(T*)itemPtr;
+		return ref *(T*)itemPtr;
+	}
+	
+	/// <summary>
+	/// 获取指定索引处的元素
+	/// </summary>
+	/// <param name="index"></param>
+	/// <param name="item"></param>
+	public void Set(int index, T item)
+	{
+		byte* data = stackalloc byte[ItemSize];
+		*(T*) data = item;
+		Set(index, new Slice<byte>(data, ItemSize));
+	}
+	
+	/// <summary>
+	/// 设置指定范围内的元素
+	/// </summary>
+	/// <param name="index"></param>
+	/// <param name="count"></param>
+	/// <param name="item"></param>
+	/// <exception cref="InvalidOperationException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	public void SetRange(int index, int count, T item)
+	{
+		if (!IsValid)
+			throw new InvalidOperationException("Chunk array is not valid");
+			
+		if (index < 0 || index + count >= Count || count < 0)
+			throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range [0, {Count - 1}]");
+			
+		byte* data = stackalloc byte[ItemSize];
+		*(T*) data = item;
+		SetRange(index, count, new Slice<byte>(data, ItemSize));
 	}
 	
 	/// <summary>
@@ -343,14 +416,46 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 	/// </summary>
 	/// <param name="index">元素的索引</param>
 	/// <returns>指定索引处的元素</returns>
-	public T this[int index]
+	public ref T this[int index]
 	{
-		get => Get(index);
+		get => ref Get(index);
 	}
 
 	public override object GetObject(int index)
 	{
 		return this [index];
+	}
+
+	public void Copy(ChunkArray<T> from, int fromIndex, ChunkArray<T> to, int toIndex, int count)
+	{
+		if (from == null)
+			throw new ArgumentNullException(nameof(from));
+			
+		if (to == null) 
+			throw new ArgumentNullException(nameof(to));
+			
+		if (!from.IsValid)
+			throw new InvalidOperationException("Source chunk array is not valid");
+			
+		if (!to.IsValid)
+			throw new InvalidOperationException("Destination chunk array is not valid");
+			
+		if (fromIndex < 0 || fromIndex >= from.Count)
+			throw new ArgumentOutOfRangeException(nameof(fromIndex), $"Index {fromIndex} is out of range [0, {from.Count - 1}]");
+			
+		if (toIndex < 0 || toIndex >= to.Count)
+			throw new ArgumentOutOfRangeException(nameof(toIndex), $"Index {toIndex} is out of range [0, {to.Count - 1}]");
+			
+		if (count < 0)
+			throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative");
+			
+		if (fromIndex + count > from.Count)
+			throw new ArgumentException($"Source range [fromIndex, fromIndex + count) = [{fromIndex}, {fromIndex + count}) is outside array bounds [0, {from.Count})");
+			
+		if (toIndex + count > to.Count)
+			throw new ArgumentException($"Destination range [toIndex, toIndex + count) = [{toIndex}, {toIndex + count}) is outside array bounds [0, {to.Count})");
+			
+		ChunkArrayDllImport.ChunkArray_Copy(from.NativeArrayPtr, fromIndex, to.NativeArrayPtr, toIndex, count);
 	}
 
 
@@ -443,17 +548,25 @@ internal unsafe static class ChunkArrayDllImport
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern int ChunkArray_AddRange(ChunkArray_Native* arr, void* item, int count);
 	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern int ChunkArray_AddDefaultRange(ChunkArray_Native* arr, int count);
+	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void* ChunkArray_Get(ChunkArray_Native* arr, int index);
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_Remove(ChunkArray_Native* arr, int index);
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_RemoveRange(ChunkArray_Native* arr, int index, int count);
 	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern void ChunkArray_Set(ChunkArray_Native* arr, int index, void* item);
+	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern void ChunkArray_SetRange(ChunkArray_Native* arr, int index, int count, void* item);
+	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_EnsureCapacity(ChunkArray_Native* arr, int count);
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_TrimExcess(ChunkArray_Native* arr);
 	[DllImport(DllImport.ReArchNativeDll)]
 	public static extern void ChunkArray_Clear(ChunkArray_Native* arr);
+	[DllImport(DllImport.ReArchNativeDll)]
+	public static extern void ChunkArray_Copy(ChunkArray_Native* from, int fromIndex, ChunkArray_Native* to, int toIndex, int count);
 }
 
 

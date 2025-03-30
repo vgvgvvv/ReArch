@@ -200,11 +200,95 @@ public partial class World
 		return entity;
 	}
 
-	// TODO: internal void Move(Entity entity, Archetype source, Archetype destination, out Slot destinationSlot)
-	// TODO: public void Destroy(Entity entity)
-	// TODO: public void TrimExcess()
-	// TODO: public void Clear()
-	// TODO: public Query Query(in QueryDescription queryDescription)
+	internal void Move(Entity entity, Archetype source, Archetype destination, out int destinationIndex)
+	{
+#if DEBUG
+		Debug.Assert(source != destination, "From-Archetype is the same as the To-Archetype. Entities cannot move within the same archetype using this function. Probably an attempt was made to attach already existing components to the entity or to remove non-existing ones.");
+#endif
+		int index = EntityInfo.GetSlot(entity.Id);
+		var allocatedEntities = destination.Add(entity, out destinationIndex);
+		source.Remove(index, out var movedEntityId);
+
+		// movedEntityId can be -1, will overwrite by next move invoke
+		EntityInfo.Move(movedEntityId, index);
+		EntityInfo.Move(entity.Id, destination, destinationIndex);
+		
+		Capacity += allocatedEntities;
+		EntityInfo.EnsureCapacity(Capacity);
+	}
+
+	public void Destroy(Entity entity)
+	{
+		// Remove from archetype and move other entity to replace its slot
+		var entityInfo = EntityInfo[entity.Id];
+		entityInfo.Archetype.Remove(entityInfo.Index, out var movedEntityId);
+		EntityInfo.Move(movedEntityId, entityInfo.Index);
+
+		DestroyEntity(entity);
+	}
+
+	public void TrimExcess()
+	{
+		Capacity = 0;
+
+		// Trim entity info and archetypes
+		EntityInfo.TrimExcess();
+		for (var index = Archetypes.Count - 1; index >= 0; index--)
+		{
+			// Remove empty archetypes.
+			var archetype = Archetypes[index];
+			if (archetype.EntityCount == 0)
+			{
+				Capacity += archetype.EntitiesPerChunk; // Since the destruction substracts that amount, add it before due to the way we calculate the new capacity.
+				DestroyArchetype(archetype);
+				continue;
+			}
+
+			archetype.TrimExcess();
+			Capacity += archetype.Entities.Capacity;
+		}
+
+		// Traverse recycled ids and remove all that are higher than the current capacity.
+		// If we do not do this, a new entity might get a id higher than the entityinfo array which causes it to go out of bounds.
+		RecycledIds.RemoveWhere(entity => entity.Id >= Capacity);
+	}
+
+	public void Clear()
+	{
+		Capacity = 0;
+		Size = 0;
+
+		// Clear
+		RecycledIds.Clear();
+		GroupToArchetype.Clear();
+		EntityInfo.Clear();
+		QueryCache.Clear();
+
+		// Set archetypes to null to free them manually since Archetypes are set to ClearMode.Never to fix #65
+		for (var index = 0; index < Archetypes.Count; index++)
+		{
+			Archetypes[index].Clear();
+			Archetypes[index] = null!;
+		}
+
+		Archetypes.Clear();
+	}
+
+	public Query Query(in QueryDescription queryDescription)
+	{
+		// Looping over all archetypes, their chunks and their entities.
+		var queryCache = QueryCache; // Storing locally to only access the QueryCache once
+		if (queryCache.TryGetValue(queryDescription, out var query))
+		{
+			return query;
+		}
+
+		query = new Query(Archetypes, queryDescription);
+		queryCache[queryDescription] = query;
+
+		return query;
+	}
+	
 	// TODO: public int CountEntities(in QueryDescription queryDescription)
 	// TODO: public void GetEntities(in QueryDescription queryDescription, Span<Entity> list, int start = 0)
 	// TODO: public void GetArchetypes(in QueryDescription queryDescription, Span<Archetype> archetypes, int start = 0)

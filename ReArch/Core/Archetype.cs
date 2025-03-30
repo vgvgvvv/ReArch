@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 using Arch.Core.Extensions.Internal;
 
@@ -122,6 +123,12 @@ public sealed unsafe partial  class Archetype
 		BitSet = signature.ToBitSet();
 		_componentIdToArrayIndex = signature.Components.ToLookupArray();
 	}
+	
+	public ChunkArray<T> GetComponents<T>() where T : unmanaged
+	{
+		var componentTypeId = Component<T>.ComponentType.Id;
+		return (ChunkArray<T>) Components[_componentIdToArrayIndex[componentTypeId]];
+	}
 
 	internal int Add(Entity entity, out int index)
 	{
@@ -135,17 +142,83 @@ public sealed unsafe partial  class Archetype
 		return alloced ? EntitiesPerChunk : 0;
 	}
 	
-	// TODO:  public void AddAll(Span<Entity> entities, int amount)
-	// TODO: internal void Remove(int index, out int movedEntityId)
-	// TODO: internal ref Entity GetEntity(scoped ref int index)
-	// TODO: internal int Add<T>(Entity entity, out Slot slot, in T? cmp = default)
-	// TODO:  internal void Set<T>(ref int index, in T? cmp)
-	// TODO: public bool Has<T>()
-	// TODO: internal ref T Get<T>(scoped ref Slot slot)
-	// TODO: internal void SetRange<T>(in Slot from, in Slot to, in T? component = default)
+	
+	public void AddAll(Slice<Entity> entities, int amount)
+	{
+		EnsureCapacity(EntityCount + amount);
+		Entities.AddRange(entities);
+		foreach (var chunkArray in Components)
+		{
+			chunkArray.AddRangeDefault(entities.Length);
+#if DEBUG
+			Debug.Assert(chunkArray.Count == EntityCount);
+#endif
+		}
+		EntityCount += amount;
+	}
+
+	internal void Remove(int index, out int movedEntityId)
+	{
+		if(index < 0 || index > EntityCount)
+			throw new ArgumentOutOfRangeException(nameof(index));
+
+		Entities.Remove(index);
+		EntityCount--;
+		foreach (var chunkArray in Components)
+		{
+			chunkArray.Remove(index);
+#if DEBUG
+			Debug.Assert(chunkArray.Count == EntityCount);
+#endif
+		}
+
+		if(index == EntityCount)
+		{
+			movedEntityId = -1;
+		}
+		else
+		{
+			movedEntityId = Entities[index].Id;
+		}
+	}
+
+	internal ref Entity GetEntity(int index)
+	{
+		return ref Entities [index];
+	}
+
+	internal int Add<T>(Entity entity, out int index, in T cmp = default) where T : unmanaged
+	{
+		var createdChunk = Add(entity, out index);
+		GetComponents<T>() [index] = cmp;
+		return createdChunk;
+	}
+
+	internal void Set<T>(ref int index, in T cmp) where T : unmanaged
+	{
+		GetComponents<T>() [index] = cmp;
+	}
+
+	public bool Has<T>() where T : unmanaged
+	{
+		var id = Component<T>.ComponentType.Id;
+		return BitSet.IsSet(id);
+	}
+
+	internal ref T Get<T>(scoped ref int index) where T : unmanaged
+	{
+		if (index < 0 || index >= EntityCount)
+			throw new IndexOutOfRangeException();
+		return ref GetComponents<T>() [index];
+	}
+
+	internal void SetRange<T>(in int start, in int count, in T component = default) where T : unmanaged
+	{
+		GetComponents<T>().SetRange(start, count, component);
+	}
+	
 	// TODO: public Enumerator<Chunk> GetEnumerator()
 	// TODO: internal ChunkRangeIterator GetRangeIterator(int from, int to)
-	
 
 	public void Clear()
 	{
@@ -181,7 +254,7 @@ public sealed partial class Archetype
 public sealed partial class Archetype
 {
 
-	private bool EnsureCapacity(int capacity)
+	public bool EnsureCapacity(int capacity)
 	{
 		if(Entities.Capacity < capacity)
 		{
@@ -195,7 +268,7 @@ public sealed partial class Archetype
 		return true;
 	}
 
-	private void TrimExcess()
+	public void TrimExcess()
 	{
 		Entities.TrimExcess();
 		foreach (var component in Components)
