@@ -321,10 +321,7 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 		if (items.Length == 0)
 			return;
 			
-		fixed (T* ptr = &items.FirstItem[0])
-		{
-			AddRange(ptr, items.Length);
-		}
+		AddRange(items.FirstItem, items.Length);
 	}
 
 	/// <summary>
