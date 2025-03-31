@@ -46,6 +46,22 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>EntityComponents.cs</LastGenOutput>
       </None>
+      <None Update="Templates\Query\Query.WithAll.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Query.WithAll.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Query\Query.WithAny.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Query.WithAny.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Query\Query.WithExclusive.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Query.WithExclusive.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Query\Query.WithNone.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Query.WithNone.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -88,6 +104,26 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>EntityComponents.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Query\Query.WithAll.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Query.WithAll.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Query\Query.WithAny.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Query.WithAny.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Query\Query.WithExclusive.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Query.WithExclusive.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Query\Query.WithNone.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Query.WithNone.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 
