@@ -34,7 +34,13 @@ public sealed class BitSet : IDisposable
 	/// </summary>
 	public int HighestBit => _highestBit;
 
-
+	public BitSet()
+	{
+		var length = _padding * sizeof(uint);
+		BitSetPtr = BitSetDllImport.BitSet_Create(length);
+		_highestBit = length;
+	}
+	
 	/// <summary>
 	/// 创建一个新的BitSet实例
 	/// </summary>

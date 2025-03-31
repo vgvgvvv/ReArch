@@ -68,7 +68,7 @@ public unsafe ref struct Slice<T> where T : unmanaged
 			if (index < 0 || index >= Length)
 				throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range [0, {Length})");
 
-			return ref *(FirstItem + index * ItemSize);
+			return ref *(FirstItem + index);
 		}
 	}
 	

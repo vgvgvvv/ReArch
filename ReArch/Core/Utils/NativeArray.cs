@@ -166,12 +166,7 @@ public unsafe class NativeArray<T> : NativeArray, IDisposable where T : unmanage
 			if (!IsValid)
 				throw new InvalidOperationException("Native array is not valid");
 #endif
-			IntPtr ptr = FirstItemPtr + index * ItemSize; 
-			if (ptr == IntPtr.Zero)
-			{
-				return default;
-			}
-			return *(T*) ptr.ToPointer();
+			return *((T*) FirstItemPtr.ToPointer() + index);
 		}
 		set
 		{
