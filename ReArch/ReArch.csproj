@@ -42,6 +42,10 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>Archetype.SetRange.cs</LastGenOutput>
       </None>
+      <None Update="Templates\Component\EntityComponents.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EntityComponents.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -80,11 +84,11 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>Archetype.SetRange.tt</DependentUpon>
       </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Templates\Query\" />
-      <Folder Include="Templates\World\" />
+      <Compile Update="Templates\Component\EntityComponents.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EntityComponents.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
