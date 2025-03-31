@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
-
+using System.Runtime.CompilerServices;
 using Arch.Core;
 
 using Collections.Pooled;
@@ -71,7 +71,7 @@ public partial class World
 public partial class World : IDisposable
 {
 
-	private World(int id, int baseChunkSize, int baseChunkEntityCount, int archetypeCapacity, int entityCapacity)
+	private World(int id, int baseEntityChunkSize, int baseChunkEntityCount, int archetypeCapacity, int entityCapacity)
 	{
 		Id = id;
 
@@ -80,7 +80,7 @@ public partial class World : IDisposable
 
 		// Entity stuff.
 		Archetypes = new Archetypes(archetypeCapacity);
-		EntityInfo = new EntityInfoStorage(baseChunkSize, entityCapacity);
+		EntityInfo = new EntityInfoStorage(baseEntityChunkSize, entityCapacity);
 		RecycledIds = new PooledQueue<RecycledEntityGUID>(entityCapacity);
 
 		// Query.
@@ -91,7 +91,7 @@ public partial class World : IDisposable
 		// JobsCache = new List<IJob>(Environment.ProcessorCount);
 
 		// Config
-		BaseChunkSize = baseChunkSize;
+		BaseEntityChunkSize = baseEntityChunkSize;
 		BaseChunkEntityCount = baseChunkEntityCount;
 	}
 	/// <summary>
@@ -133,7 +133,7 @@ public partial class World : IDisposable
 	///     The <see cref="Chunk"/> size of each <see cref="Archetype"/> in bytes.
 	/// <remarks>For the best cache optimisation use values that are divisible by 16Kb.</remarks>
 	/// </summary>
-	public int BaseChunkSize { get; private set; } = 16_384;
+	public int BaseEntityChunkSize { get; private set; } = 4096;
 
 	/// <summary>
 	///     The minimum number of <see cref="Entity"/>'s that should fit into a <see cref="Chunk"/> within all <see cref="Archetype"/>s.
@@ -288,12 +288,51 @@ public partial class World
 
 		return query;
 	}
-	
-	// TODO: public int CountEntities(in QueryDescription queryDescription)
-	// TODO: public void GetEntities(in QueryDescription queryDescription, Span<Entity> list, int start = 0)
-	// TODO: public void GetArchetypes(in QueryDescription queryDescription, Span<Archetype> archetypes, int start = 0)
-	// TODO: public void GetChunks(in QueryDescription queryDescription, Span<Chunk> chunks, int start = 0)
-	// TODO:  public Enumerator<Archetype> GetEnumerator()
+
+	public int CountEntities(in QueryDescription queryDescription)
+	{
+		int count = 0;
+		var query = Query(queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			foreach (var entity in archetype.Entities)
+			{
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	public void GetEntities(in QueryDescription queryDescription, Span<Entity> list, int start = 0)
+	{
+		var index = 0;
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			foreach (var entity in archetype.Entities)
+			{
+				list[start + index] = entity;
+				index++;
+			}
+		}
+	}
+
+	public void GetArchetypes(in QueryDescription queryDescription, Span<Archetype> archetypes, int start = 0)
+	{
+		var index = 0;
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			archetypes[start + index] = archetype;
+			index++;
+		}
+	}
+
+	public Enumerator<Archetype> GetEnumerator()
+	{
+		return new Enumerator<Archetype>(Archetypes.AsSpan());
+	}
 }
 
 #endregion
@@ -317,8 +356,11 @@ public partial class World
 			return archetype;
 		}
 
+		var initialChunkCount = BaseChunkEntityCount / BaseEntityChunkSize;
+		var entityCountPerChunk = BaseEntityChunkSize / Unsafe.SizeOf<Entity>();
+		
 		// Create archetype
-		archetype = new Archetype(signature, BaseChunkSize, BaseChunkEntityCount);
+		archetype = new Archetype(signature, entityCountPerChunk, initialChunkCount);
 
 		GroupToArchetype[hashCode] = archetype;
 		Archetypes.Add(archetype);
@@ -358,10 +400,53 @@ public partial class World
   
 #region Queries
 
+public interface IForEach
+{
+	public void Update(Entity entity);
+}
+
+public delegate void ForEach(Entity entity);
+
 public partial class World
 {
 
+	public void Query(in QueryDescription queryDescription, ForEach forEntity)
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			foreach (var entity in archetype.Entities)
+			{
+				forEntity(entity);
+			}
+		}
+	}
 	
+	public void InlineQuery<T>(in QueryDescription queryDescription) where T : struct, IForEach
+	{
+		var t = new T();
+
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			foreach (var entity in archetype.Entities)
+			{
+				t.Update(entity);
+			}
+		}
+	}
+	
+	public void InlineQuery<T>(in QueryDescription queryDescription, ref T iForEach) where T : struct, IForEach
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			foreach (var entity in archetype.Entities)
+			{
+				iForEach.Update(entity);
+			}
+		}
+	}
 
 }
   
@@ -371,10 +456,96 @@ public partial class World
 
 public partial class World
 {
-	// TODO: public void Destroy(in QueryDescription queryDescription)
-	// TODO: public void Set<T>(in QueryDescription queryDescription, in T? value = default)
-	// TODO: public void Add<T>(in QueryDescription queryDescription, in T? component = default)
-	// TODO: public void Remove<T>(in QueryDescription queryDescription)
+	[StructuralChange]
+	public void Destroy(in QueryDescription queryDescription)
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			foreach (var entity in archetype.Entities)
+			{
+				DestroyEntity(entity);
+			}
+			archetype.Clear();
+		}
+	}
+
+	public void Set<T>(in QueryDescription queryDescription, in T value = default) where T : unmanaged
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			foreach (ref var component in archetype.GetComponents<T>())
+			{
+				component = value;
+			}
+		}
+	}
+
+	[SkipLocalsInit]
+    [StructuralChange]
+	public void Add<T>(in QueryDescription queryDescription, in T component = default) where T : unmanaged
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			if (archetype.EntityCount == 0 || archetype.Has<T>())
+			{
+				continue;
+			}
+			
+			var oldArchetype = archetype;
+			var count = oldArchetype.EntityCount;
+			var newSignature = Signature.Add(archetype.Signature, Component<T>.Signature);
+			// create new archetype
+			var newArchetype = GetOrCreateArchetype(newSignature);
+			var newArchetypeIndex = newArchetype.EntityCount;
+			// move entityinfo to new archetype
+			EntityInfo.MoveToAnotherArchetype(oldArchetype, newArchetype, newArchetypeIndex);
+			
+			var oldCapacity = oldArchetype.EntityCapacity;
+			// copy entity & component after new archetype
+			Archetype.CopyAfter(oldArchetype, newArchetype);
+			newArchetype.SetRange(newArchetypeIndex, count, component);
+			// clear old archetype
+			oldArchetype.Clear();
+			
+			// Update capacity
+			Capacity += newArchetype.EntityCapacity - oldCapacity;
+		}
+	}
+
+	[SkipLocalsInit]
+	[StructuralChange]
+	public void Remove<T>(in QueryDescription queryDescription) where T : unmanaged
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			// Archetype without T shouldnt be skipped to prevent undefined behaviour.
+			if (archetype.EntityCount <= 0 || !archetype.Has<T>())
+			{
+				continue;
+			}
+			
+			var oldArchetype = archetype;
+			var newSignature = Signature.Add(archetype.Signature, Component<T>.Signature);
+			// create new archetype
+			var newArchetype = GetOrCreateArchetype(newSignature);
+			var newArchetypeIndex = newArchetype.EntityCount;
+			// move entityinfo to new archetype
+			EntityInfo.MoveToAnotherArchetype(oldArchetype, newArchetype, newArchetypeIndex);
+			
+			var oldCapacity = oldArchetype.EntityCapacity;
+			// copy entity & component after new archetype
+			Archetype.CopyAfter(oldArchetype, newArchetype);
+			// clear old archetype
+			oldArchetype.Clear();
+			
+			// Update capacity
+			Capacity += newArchetype.EntityCapacity - oldCapacity;
+		}
+	}
 }
 
 #endregion
@@ -383,22 +554,188 @@ public partial class World
 
 public partial class World
 {
-	// TODO: public Archetype EnsureCapacity(in Signature signature, int amount)
-	// TODO: public Archetype EnsureCapacity<T>(int amount)
-	// TODO: internal void GetNextEntitiesIn(Archetype archetype, Span<Entity> entities, Span<EntityData> entityData, int amount)
-	// TODO: internal void AddEntityData(Span<Entity> entities, Span<EntityData> entityData, int amount)
-	// TODO: public void Create(Span<Entity> createdEntities, in Signature signature, int amount)
-	// TODO: public void Create<T>(int amount, in T? cmp = default)
-	// TODO: public void Set<T>(Entity entity, in T? component = default)
-	// TODO: public bool Has<T>(Entity entity)
-	// TODO: public ref T Get<T>(Entity entity)
-	// TODO: public bool TryGet<T>(Entity entity, out T? component)
-	// TODO: public ref T TryGetRef<T>(Entity entity, out bool exists)
-	// TODO: public ref T AddOrGet<T>(Entity entity, T? component = default)
-	// TODO: internal void Add<T>(Entity entity, out Archetype newArchetype, out Slot slot)
-	// TODO: public void Add<T>(Entity entity)
-	// TODO: public void Add<T>(Entity entity, in T component)
-	// TODO: public void Remove<T>(Entity entity)
+	public Archetype EnsureCapacity(in Signature signature, int amount)
+	{
+		// Ensure size of archetype
+		var archetype = GetOrCreateArchetype(signature);
+		Capacity -= archetype.EntityCapacity;     // Reduce capacity, in case the previous capacity was already included, ensures more and more till memory leak
+		archetype.Entities.EnsureCapacity(archetype.EntityCount + amount);
+
+		// Ensure size of world
+		var requiredCapacity = Capacity + archetype.EntityCapacity;
+		EntityInfo.EnsureCapacity(requiredCapacity);
+		Capacity = requiredCapacity;
+
+		return archetype;
+	}
+
+	public Archetype EnsureCapacity<T>(int amount)
+	{
+		return EnsureCapacity(in Component<T>.Signature, amount);
+	}
+
+	internal void GetNextEntitiesIn(Archetype archetype, Span<Entity> entities, Span<EntityData> entityData, int amount)
+	{
+		var startIndex = archetype.Entities.Count;
+		for(var index = 0; index < amount; index++)
+		{
+			GetOrCreateNextEntity(out var entity);
+			entities[index] = entity;
+			entityData[index] = new EntityData(archetype, startIndex + index);
+		}
+	}
+
+	internal void AddEntityData(Span<Entity> entities, Span<EntityData> entityData, int amount)
+	{
+		var existingEntityData = EntityInfo.EntityDatas;
+		for (var index = 0; index < amount; index++)
+		{
+			var entity = entities[index];
+			ref var data = ref entityData[index];
+			existingEntityData.Set(entity.Id, in data);
+		}
+	}
+
+	public void Create(Span<Entity> createdEntities, in Signature signature, int amount)
+	{
+		var archetype = EnsureCapacity(in signature, amount);
+
+		// Rent arrays
+		using var entityDataArray = Pool<EntityData>.Rent(amount);
+		var entityData = entityDataArray.AsSpan();
+
+		// Create entities
+		GetNextEntitiesIn(archetype, createdEntities, entityData, amount);
+		archetype.AddAll(createdEntities, amount);
+
+		// Add entities to entityinfo
+		AddEntityData(createdEntities, entityData, amount);
+	}
+	
+	public void Create<T>(int amount, in T cmp = default) where T : unmanaged
+	{
+		var archetype = EnsureCapacity<T>(amount);
+
+		// Prepare entities, slots and data
+		using var entityArray =  Pool<Entity>.Rent(amount);
+		using var entityDataArray =  Pool<EntityData>.Rent(amount);
+		var entities = entityArray.AsSpan();
+		var entityData = entityDataArray.AsSpan();
+
+		// Create entities
+		GetNextEntitiesIn(archetype, entities, entityData, amount);
+		archetype.AddAll(entities, amount);
+
+		// Fill entities
+		var firstSlot = entityData[0].Index;
+		var lastSlot = entityData[amount - 1].Index;
+		var count = lastSlot - firstSlot;
+		archetype.SetRange(in firstSlot, in count, cmp);
+
+		// Add entities to entityinfo
+		AddEntityData(entities, entityData, amount);
+	}
+	
+	public void Set<T>(Entity entity, in T component = default) where T : unmanaged
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		var index = entitySlot.Index;
+		var archetype = entitySlot.Archetype;
+		archetype.Set(ref index, in component);
+	}
+	
+	public bool Has<T>(Entity entity) where T : unmanaged
+	{
+		var archetype = EntityInfo.GetArchetype(entity.Id);
+		return archetype.Has<T>();
+	}
+
+	public ref T Get<T>(Entity entity) where T : unmanaged
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		var index = entitySlot.Index;
+		var archetype = entitySlot.Archetype;
+		return ref archetype.Get<T>(ref index);
+	}
+
+	public bool TryGet<T>(Entity entity, out T? component) where T : unmanaged
+	{
+		component = default;
+
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		var index = entitySlot.Index;
+		var archetype = entitySlot.Archetype;
+
+		if (!archetype.Has<T>())
+		{
+			return false;
+		}
+
+		component = archetype.Get<T>(ref index);
+		return true;
+	}
+	
+	public ref T TryGetRef<T>(Entity entity, out bool exists) where T : unmanaged
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		var index = entitySlot.Index;
+		var archetype = entitySlot.Archetype;
+
+		if (!(exists = archetype.Has<T>()))
+		{
+			return ref Unsafe.NullRef<T>();
+		}
+
+		return ref archetype.Get<T>(ref index);
+	}
+	
+	public ref T AddOrGet<T>(Entity entity, T component = default) where T : unmanaged
+	{
+		ref T cmp = ref TryGetRef<T>(entity, out var exists);
+		if (exists)
+		{
+			return ref cmp;
+		}
+
+		Add(entity, component);
+		return ref Get<T>(entity);
+	}
+	
+	[StructuralChange]
+	internal void Add<T>(Entity entity, out Archetype newArchetype, out int addedIndex)  where T : unmanaged
+	{
+		var oldArchetype = EntityInfo.GetArchetype(entity.Id);
+		var type = Component<T>.ComponentType;
+		var newSignature = Signature.Add(oldArchetype.Signature, type);
+		newArchetype = GetOrCreateArchetype(newSignature);
+		
+		Move(entity, oldArchetype, newArchetype, out addedIndex);
+	}
+	
+	[SkipLocalsInit]
+	[StructuralChange]
+	public void Add<T>(Entity entity) where T : unmanaged
+	{
+		Add<T>(entity, out _, out _);
+	}
+	
+	public void Add<T>(Entity entity, in T component) where T : unmanaged
+	{
+		Add<T>(entity, out var newArchetype, out var slot);
+		newArchetype.Set(ref slot, component);
+	}
+	
+	[SkipLocalsInit]
+	[StructuralChange]
+	public void Remove<T>(Entity entity)
+	{
+		var oldArchetype = EntityInfo.GetArchetype(entity.Id);
+		var type = Component<T>.ComponentType;
+		var newSignature = Signature.Remove(oldArchetype.Signature, type);
+		var newArchetype = GetOrCreateArchetype(newSignature);
+		
+		Move(entity, oldArchetype, newArchetype, out _);
+	}
 }
 
 #endregion
@@ -409,19 +746,157 @@ public partial class World
 
 public partial class World
 {
-	// TODO: public void Set(Entity entity, object component)
-	// TODO: public void SetRange(Entity entity, Span<object> components)
-	// TODO: public bool Has(Entity entity, ComponentType type)
-	// TODO: public bool HasRange(Entity entity, Span<ComponentType> types)
-	// TODO: public object? Get(Entity entity, ComponentType type)
-	// TODO: public object?[] GetRange(Entity entity, Span<ComponentType> types)
-	// TODO: public void GetRange(Entity entity, Span<ComponentType> types, Span<object?> components)
-	// TODO: public bool TryGet(Entity entity, ComponentType type, out object? component)
-	// TODO: public void Add(Entity entity, in object cmp)
-	// TODO: public void AddRange(Entity entity, Span<object> components)
-	// TODO: public void AddRange(Entity entity, Span<ComponentType> components)
-	// TODO: public void Remove(Entity entity, ComponentType type)
-	// TODO: public void RemoveRange(Entity entity, Span<ComponentType> types)
+	public void Set(Entity entity, object component)
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		entitySlot.Archetype.Set(ref entitySlot.Index, component);
+		
+	}
+
+	public void SetRange(Entity entity, Span<object> components)
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		foreach (var cmp in components)
+		{
+			entitySlot.Archetype.Set(ref entitySlot.Index, cmp);
+		}
+	}
+
+	public bool Has(Entity entity, ComponentType type)
+	{
+		var archetype = EntityInfo.GetArchetype(entity.Id);
+		return archetype.Has(type);
+	}
+
+	public bool HasRange(Entity entity, Span<ComponentType> types)
+	{
+		var archetype = EntityInfo.GetArchetype(entity.Id);
+		foreach (var type in types)
+		{
+			if (!archetype.Has(type))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public object? Get(Entity entity, ComponentType type)
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		return entitySlot.Archetype.Get(entitySlot.Index, type);
+	}
+
+	public object?[] GetRange(Entity entity, Span<ComponentType> types)
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		var array = new object?[types.Length];
+		for (var index = 0; index < types.Length; index++)
+		{
+			var type = types[index];
+			array[index] = entitySlot.Archetype.Get(entitySlot.Index, type);
+		}
+
+		return array;
+	}
+
+	public void GetRange(Entity entity, Span<ComponentType> types, Span<object?> components)
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		for (var index = 0; index < types.Length; index++)
+		{
+			var type = types[index];
+			components[index] = entitySlot.Archetype.Get(entitySlot.Index, type);
+		}
+	}
+
+	public bool TryGet(Entity entity, ComponentType type, out object? component)
+	{
+		component = default;
+		if (!Has(entity, type))
+		{
+			return false;
+		}
+
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		component = entitySlot.Archetype.Get(entitySlot.Index, type);
+		return true;
+	}
+
+	public void Add(Entity entity, in object cmp)
+	{
+		var oldArchetype = EntityInfo.GetArchetype(entity.Id);
+		var type = (ComponentType)cmp.GetType();
+		var newSignature = Signature.Add(oldArchetype.Signature, type);
+		var newArchetype = GetOrCreateArchetype(newSignature);
+
+		Move(entity, oldArchetype, newArchetype, out var index);
+		newArchetype.Set(ref index, cmp);
+	}
+	
+	public unsafe int AddRange(Entity entity, Span<object> components)
+	{
+		var oldArchetype = EntityInfo.GetArchetype(entity.Id);
+		var oldSignature = oldArchetype.Signature;
+		Slice<ComponentType> types = stackalloc ComponentType[components.Length];
+		int tmpIndex = 0;
+		foreach (object component in components)
+		{
+			var type = component.GetType();
+			if (!ComponentRegistry.TryGet(type, out var componentType))
+			{
+				throw new Exception($"type {type} is not a registered component type");
+			}
+			types[tmpIndex] = componentType;
+			tmpIndex++;
+		}
+		Signature newSignature = Signature.AddRange(oldSignature, types);
+
+		var newArchetype = GetOrCreateArchetype(newSignature);
+		Move(entity, oldArchetype, newArchetype, out var index);
+		
+		foreach (var cmp in components)
+		{
+			newArchetype.Set(ref index, cmp);
+		}
+
+		return index;
+	}
+
+	public int AddRange(Entity entity, Slice<ComponentType> componentTypes)
+	{
+		var oldArchetype = EntityInfo.GetArchetype(entity.Id);
+		var oldSignature = oldArchetype.Signature;
+		Signature newSignature = Signature.AddRange(oldSignature, componentTypes);
+
+		var newArchetype = GetOrCreateArchetype(newSignature);
+		Move(entity, oldArchetype, newArchetype, out var index);
+
+		return index;
+	}
+	
+	public void Remove(Entity entity, ComponentType type)
+	{
+		var oldArchetype = EntityInfo.GetArchetype(entity.Id);
+		var newSignature = Signature.Remove(oldArchetype.Signature, type);
+		var newArchetype = GetOrCreateArchetype(newSignature);
+
+		Move(entity, oldArchetype, newArchetype, out var index);
+	}
+
+	public int RemoveRange(Entity entity, Span<ComponentType> componentTypes)
+	{
+		var oldArchetype = EntityInfo.GetArchetype(entity.Id);
+		var oldSignature = oldArchetype.Signature;
+		
+		Signature newSignature = Signature.RemoveRange(oldSignature, componentTypes);
+		
+		var newArchetype = GetOrCreateArchetype(newSignature);
+		Move(entity, oldArchetype, newArchetype, out var index);
+
+		return index;
+	}
 }
 
 #endregion

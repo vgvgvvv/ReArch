@@ -74,9 +74,13 @@ internal class EntityInfoStorage
 		data.Index = index;
 	}
 
-	public void Shift(Archetype archetype, Slot archetypeSlot, Archetype newArchetype, Slot newArchetypeSlot)
+	public void MoveToAnotherArchetype(Archetype oldArchetype, Archetype newArchetype, int newArchetypeIndex)
 	{
-		// TODO: Implement
+		foreach (var entity in oldArchetype.Entities)
+		{
+			Move(entity.Id, newArchetype, newArchetypeIndex);
+			newArchetypeIndex++;
+		}
 	}
 	
 	public void EnsureCapacity(int capacity)

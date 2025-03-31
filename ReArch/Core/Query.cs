@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Buffers;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -89,6 +91,15 @@ public struct Signature : IEquatable<Signature>
         var result = new Signature(set.ToArray());
         return result;
     }
+
+    public static Signature AddRange(Signature first, Slice<ComponentType> newTypes)
+    {
+        using var set = new PooledSet<ComponentType>(first.Count + newTypes.Length);
+        set.UnionWith(first.ComponentsArray);
+        set.UnionWith(newTypes);
+        var result = new Signature(set.ToArray());
+        return result;
+    }
     
     public static Signature Remove(Signature first, Signature second)
     {
@@ -96,6 +107,17 @@ public struct Signature : IEquatable<Signature>
         using var set = new PooledSet<ComponentType>(first.Count + second.Count);
         set.UnionWith(first.ComponentsArray);
         set.ExceptWith(second.ComponentsArray);
+
+        var result = new Signature(set.ToArray());
+        return result;
+    }
+
+    public static Signature RemoveRange(Signature first, Slice<ComponentType> newTypes)
+    {
+        // Copy signatures into new array
+        using var set = new PooledSet<ComponentType>(first.Count + newTypes.Length);
+        set.UnionWith(first.ComponentsArray);
+        set.ExceptWith(newTypes);
 
         var result = new Signature(set.ToArray());
         return result;
@@ -152,6 +174,18 @@ public struct Signature : IEquatable<Signature>
         bitSet.SetBits(Components);
         return bitSet;
     }
+    
+    public void ToBitSet(ref SliceBitSet bitSet)
+    {
+        if (Components.Length == 0)
+        {
+            return;
+        }
+        int max = ComponentsArray.Max(x => x.Id);
+        bitSet.SetBits(Components);
+    }
+
+
 }
 
 [SkipLocalsInit]
@@ -314,8 +348,12 @@ public partial class Query : IEquatable<Query>
         return _isExclusive ? _exclusive.Exclusive(bitset) : _all.All(bitset) && _any.Any(bitset) && _none.None(bitset);
     }
     
-    // TODO: Implement these methods
-    // public QueryArchetypeIterator GetArchetypeIterator()
+    public QueryArchetypeIterator GetArchetypeIterator()
+    {
+        Match();
+        return new QueryArchetypeIterator(_matchingArchetypes.Span);
+    }
+    
     // public QueryChunkIterator GetChunkIterator()
     // public QueryChunkEnumerator GetEnumerator()
     
@@ -377,3 +415,57 @@ public partial class Query : IEquatable<Query>
         return !left.Equals(right);
     }
 }
+
+[SkipLocalsInit]
+public ref struct QueryArchetypeEnumerator
+{
+    private Enumerator<Archetype> _archetypes;
+    
+    public QueryArchetypeEnumerator(Span<Archetype> archetypes)
+    {
+        _archetypes = new Enumerator<Archetype>(archetypes);
+    }
+    
+    [SkipLocalsInit]
+    public bool MoveNext()
+    {
+        while (_archetypes.MoveNext())
+        {
+            var archetype = _archetypes.Current;
+            if (archetype.EntityCount > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    [SkipLocalsInit]
+    public void Reset()
+    {
+        _archetypes.Reset();
+    }
+    
+    [SkipLocalsInit]
+    public Archetype Current => _archetypes.Current;
+    
+}
+
+[SkipLocalsInit]
+public readonly ref struct QueryArchetypeIterator
+{
+    private readonly Span<Archetype> _archetypes;
+
+    public QueryArchetypeIterator(Span<Archetype> archetypes)
+    {
+        _archetypes = archetypes;
+    }
+
+    [SkipLocalsInit]
+    public QueryArchetypeEnumerator GetEnumerator()
+    {
+        return new QueryArchetypeEnumerator(_archetypes);
+    }
+}
+

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-
+using System.Runtime.InteropServices;
 using Arch.Core.Extensions.Internal;
 
 using Collections.Pooled;
@@ -35,6 +35,11 @@ public sealed class Archetypes : IDisposable
 		Items.Remove(archetype);
 		_hashCode = -1;
 		GetHashCode();
+	}
+	
+	public Span<Archetype> AsSpan()
+	{
+		return Items.Span;
 	}
 	
 	public Archetype this[int index]
@@ -94,6 +99,7 @@ public sealed unsafe partial  class Archetype
 	internal int[] LookupArray => _componentIdToArrayIndex;
 
 	public ChunkArray<Entity> Entities { get; }
+	public int EntityCapacity => Entities.Capacity;
 	public ChunkArray[] Components { get; }
 	public int EntitiesPerChunk { get; }
 	public Signature Signature { get; }
@@ -105,16 +111,16 @@ public sealed unsafe partial  class Archetype
 		internal set;
 	}
 
-	internal Archetype(Signature signature, int entityCountInChunk, int initialCapacity)
+	internal Archetype(Signature signature, int entityCountInChunk, int initialChunkCount)
 	{
 		Signature = signature;
 		EntitiesPerChunk = entityCountInChunk;
-		Entities = new ChunkArray<Entity>(entityCountInChunk, initialCapacity);
+		Entities = new ChunkArray<Entity>(entityCountInChunk, initialChunkCount);
 		Components = new ChunkArray[signature.Count];
 		int i = 0;
 		foreach (var componentType in signature.Components)
 		{
-			var componentChunkArray = ArrayRegistry.GetArray(componentType, entityCountInChunk, initialCapacity);
+			var componentChunkArray = ArrayRegistry.GetArray(componentType, entityCountInChunk, initialChunkCount);
 			Components [i] = componentChunkArray;
 			i++;
 		}
@@ -122,6 +128,37 @@ public sealed unsafe partial  class Archetype
 		// The bitmask/set
 		BitSet = signature.ToBitSet();
 		_componentIdToArrayIndex = signature.Components.ToLookupArray();
+	}
+
+	public ChunkArray GetComponents(Type type)
+	{
+		if (!ComponentRegistry.TryGet(type, out var componentType))
+		{
+			throw new Exception($"cannot find component type {componentType}");
+		}
+		return Components[_componentIdToArrayIndex[componentType.Id]];
+	}
+
+	public ChunkArray GetComponents(ComponentType type)
+	{
+		var index = _componentIdToArrayIndex[type.Id];
+		if (index == -1)
+		{
+			throw new Exception("Component not found in archetype");
+		}
+		return Components[index];
+	}
+
+	public bool TryGetComponents(ComponentType type, out ChunkArray chunkArray)
+	{
+		var index = _componentIdToArrayIndex[type.Id];
+		if (index == -1)
+		{
+			chunkArray = null;
+			return false;
+		}
+		chunkArray = Components[index];
+		return true;
 	}
 	
 	public ChunkArray<T> GetComponents<T>() where T : unmanaged
@@ -217,9 +254,6 @@ public sealed unsafe partial  class Archetype
 		GetComponents<T>().SetRange(start, count, component);
 	}
 	
-	// TODO: public Enumerator<Chunk> GetEnumerator()
-	// TODO: internal ChunkRangeIterator GetRangeIterator(int from, int to)
-
 	public void Clear()
 	{
 		EntityCount = 0;
@@ -234,20 +268,73 @@ public sealed unsafe partial  class Archetype
 public sealed unsafe partial class Archetype
 {
 
-	// internal void Set(ref Slot slot, in object cmp)
+	internal void Set(ref int index, in object cmp)
+	{
+		if(index > EntityCount)
+			throw new ArgumentOutOfRangeException(nameof(index));
+		if (!ComponentRegistry.TryGet(cmp.GetType(), out var componentType))
+		{
+			throw new Exception($"Cannot find component type {componentType.Type}");
+		}
+		var chunkArray = GetComponents(componentType);
+		var byteSize = componentType.ByteSize;
+		byte* ptr = stackalloc byte[componentType.ByteSize];
+		Marshal.StructureToPtr(cmp, new IntPtr(ptr), false);
+		chunkArray.Set(index, new Slice<byte>(ptr, byteSize)) ;
+	}
+
+	public bool Has(ComponentType type)
+	{
+		var id = type.Id;
+		return BitSet.IsSet(id);
+	}
+
+	internal object? Get(int index, ComponentType type)
+	{
+		if (!Has(type))
+		{
+			return null;
+		}
+		var chunkArray = GetComponents(type);
+		var byteSize = type.ByteSize;
+		byte* ptr = stackalloc byte[byteSize];
+		chunkArray.Get(index, new Slice<byte>(ptr, byteSize));
+		return Marshal.PtrToStructure(new IntPtr(ptr), type.Type);
+	}
 	
-	// bool Has(ComponentType type)
-	
-	// internal object? Get(scoped ref Slot slot, ComponentType type)
-	
+
 }
 
 public sealed partial class Archetype
 {
 
-	// internal static void Copy(Archetype source, Archetype destination)
-	
-	// internal static void CopyComponents(Archetype from, ref int fromIndex, Archetype to, ref int toIndex)
+	internal static void CopyOverwrite(Archetype source, Archetype destination, int destinationIndex)
+	{
+		var oldCount = destination.EntityCount;
+		var newCount = destinationIndex + source.EntityCount;
+		destination.EnsureCapacity(destinationIndex + source.EntityCount);
+		destination.AddRangeDefault(newCount - oldCount);
+		ChunkArray.Copy(source.Entities, 0, destination.Entities, destinationIndex, source.EntityCount);
+		CopyComponents(source, 0, destination, destinationIndex);
+	}
+
+	internal static void CopyAfter(Archetype source, Archetype destination)
+	{
+		CopyOverwrite(source, destination, destination.EntityCount);
+	}
+
+	internal static void CopyComponents(Archetype from, int fromIndex, Archetype to, int toIndex)
+	{
+		foreach (var componentType in from.Signature.Components)
+		{
+			var fromComponents = from.GetComponents(componentType);
+			if (!to.TryGetComponents(componentType, out var toComponents))
+			{
+				continue;
+			}
+			ChunkArray.Copy(fromComponents, fromIndex, toComponents, toIndex, from.EntityCount);
+		}
+	}
 
 }
 
@@ -268,6 +355,23 @@ public sealed partial class Archetype
 		return true;
 	}
 
+	public void AddRangeDefault(int amount)
+	{
+		Entities.AddRangeDefault(amount);
+		foreach (var component in Components)
+		{
+			component.AddRangeDefault(amount);
+		}
+		EntityCount += amount;
+#if DEBUG
+		Debug.Assert(Entities.Count == EntityCount);
+		foreach (var component in Components)
+		{
+			Debug.Assert(component.Count == EntityCount);
+		}
+#endif
+	}
+
 	public void TrimExcess()
 	{
 		Entities.TrimExcess();
@@ -275,6 +379,13 @@ public sealed partial class Archetype
 		{
 			component.TrimExcess();
 		}
+#if DEBUG
+		Debug.Assert(Entities.Count == EntityCount);
+		foreach (var component in Components)
+		{
+			Debug.Assert(component.Count == EntityCount);
+		}
+#endif
 	}
 
 }

@@ -4,10 +4,9 @@ using System.Runtime.CompilerServices;
 namespace ReArch.Core.Utils;
 
 [SkipLocalsInit]
-public unsafe ref struct Enumerator<T> where T : unmanaged
+public ref struct Enumerator<T>
 {
-
-	private readonly T* _ptr;
+	private readonly Span<T> _ptr;
 	private int _index;
 	private readonly int _length;
 
@@ -15,11 +14,11 @@ public unsafe ref struct Enumerator<T> where T : unmanaged
 	///     Initializes a new instance of the <see cref="Enumerator{T}"/> struct.
 	/// </summary>
 	/// <param name="slice">The <see cref="Span{T}"/> with items to iterate over.</param>
-	public Enumerator(Slice<T> slice)
+	public Enumerator(Span<T> span)
 	{
 
-		_ptr = slice.FirstItem;
-		_length = slice.Length;
+		_ptr = span;
+		_length = span.Length;
 		_index = _length;
 	}
 

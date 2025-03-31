@@ -73,7 +73,7 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 	/// <param name="countInChunk">每个块中可容纳的元素数量</param>
 	/// <param name="initialChunkCount">初始预分配的块数量</param>
 	/// <param name="defaultValue">标记删除元素的默认值</param>
-	public JaggedArray(int countInChunk, int initialChunkCount, T defaultValue = default)
+	public JaggedArray(int countInChunk, int initialChunkCount, in T defaultValue = default)
 	{
 		if (countInChunk <= 0)
 			throw new ArgumentException("Count in chunk must be greater than zero", nameof(countInChunk));
@@ -116,7 +116,7 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 	/// </summary>
 	/// <param name="item">要添加的元素</param>
 	/// <returns>新添加元素的索引</returns>
-	public int SetOrAdd(T item)
+	public int SetOrAdd(in T item)
 	{
 		var id = GetFirstEmptyIndex();
 		if (id != -1)
@@ -189,7 +189,7 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 	/// <param name="result">输出参数，用于返回元素值</param>
 	/// <param name="defaultValueIfRemoved">如果元素已被删除，返回的默认值</param>
 	/// <returns>如果索引有效，返回true，否则返回false</returns>
-	public bool TryGet(int index, out T result, T defaultValueIfRemoved = default)
+	public bool TryGet(int index, out T result, in T defaultValueIfRemoved = default)
 	{
 		if (index < 0 || index >= _totalCount)
 		{
@@ -235,7 +235,7 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 	/// </summary>
 	/// <param name="index">元素的索引</param>
 	/// <param name="value">要设置的值</param>
-	public void Set(int index, T value)
+	public void Set(int index, in T value)
 	{
 		if (index < 0 || index >= _totalCount)
 			throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range [0, {_totalCount - 1}]");
@@ -366,7 +366,7 @@ public class JaggedArray<T> : IEnumerable<T>, IDisposable
 	/// <param name="countInChunk">每个块中可容纳的元素数量</param>
 	/// <param name="defaultValue">标记删除元素的默认值</param>
 	/// <returns>新创建的托管分块数组</returns>
-	public static JaggedArray<T> FromArray(T[] array, int countInChunk = 1024, T defaultValue = default)
+	public static JaggedArray<T> FromArray(T[] array, int countInChunk = 1024, in T defaultValue = default)
 	{
 		if (array == null)
 			throw new ArgumentNullException(nameof(array));

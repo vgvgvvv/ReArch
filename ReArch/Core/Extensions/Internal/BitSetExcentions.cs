@@ -16,5 +16,14 @@ internal static class BitSetExtensions
             bitSet.SetBit(id);
         }
     }
+    
+    internal static void SetBits(this SliceBitSet bitSet, Slice<ComponentType> types)
+    {
+        foreach (var type in types)
+        {
+            var id = type.Id;
+            bitSet.SetBit(id);
+        }
+    }
 
 }

@@ -6,12 +6,12 @@
  * 创建一个新的ChunkArray
  * @param countInChunk 每个块中可容纳的元素数量
  * @param itemSize 每个元素的大小（字节）
- * @param capacity 初始预分配的块数量
+ * @param initialChunkCount 初始预分配的块数量
  * @return 新创建的ChunkArray指针
  */
-ChunkArray* ChunkArray_Create(int32 countInChunk, int32 itemSize, int32 capacity)
+ChunkArray* ChunkArray_Create(int32 countInChunk, int32 itemSize, int32 initialChunkCount)
 {
-    if (countInChunk <= 0 || capacity <= 0)
+    if (countInChunk <= 0 || initialChunkCount <= 0)
     {
         return nullptr;
     }
@@ -19,15 +19,15 @@ ChunkArray* ChunkArray_Create(int32 countInChunk, int32 itemSize, int32 capacity
     // 创建ChunkArray结构
     ChunkArray* arr = NEW(ChunkArray);
     arr->ItemSizeInByte = itemSize; // 设置元素大小
-    arr->ChunkCount = capacity;
+    arr->ChunkCount = initialChunkCount;
     arr->ItemCount = 0;
     arr->ChunkSizeInBytes = countInChunk * itemSize;
     
     // 分配Chunks数组
-    arr->Chunks = NEW_ARRAY(Chunk, capacity);
+    arr->Chunks = NEW_ARRAY(Chunk, initialChunkCount);
     
     // 初始化所有Chunk
-    for (int32 i = 0; i < capacity; ++i)
+    for (int32 i = 0; i < initialChunkCount; ++i)
     {
         arr->Chunks[i].ItemSize = arr->ItemSizeInByte;
         arr->Chunks[i].ItemCount = 0;

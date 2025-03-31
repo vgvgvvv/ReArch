@@ -15,7 +15,7 @@ internal unsafe struct Chunk
 {
 	public int ItemSizeInByte;
 	public int ItemCount;
-	public void* Data;
+	public void** Data;
 };
 
 internal unsafe struct ChunkArray_Native
@@ -174,7 +174,7 @@ public abstract unsafe class ChunkArray : IDisposable
 	/// <param name="index">元素的索引</param>
 	/// <param name="destination">用于存储元素数据的目标缓冲区</param>
 	/// <returns>true表示成功，false表示失败</returns>
-	public bool Get(int index, Span<byte> destination)
+	public bool Get(int index, Slice<byte> destination)
 	{
 		if (!IsValid)
 			throw new InvalidOperationException("Chunk array is not valid");
@@ -189,11 +189,8 @@ public abstract unsafe class ChunkArray : IDisposable
 		if (itemPtr == null)
 			return false;
 			
-		fixed (byte* destPtr = destination)
-		{
-			Buffer.MemoryCopy(itemPtr, destPtr, destination.Length, ItemSize);
-			return true;
-		}
+		Buffer.MemoryCopy(itemPtr, destination.FirstItem, destination.Length, ItemSize);
+		return true;
 	}
 
 	public abstract object GetObject(int index);
@@ -262,6 +259,37 @@ public abstract unsafe class ChunkArray : IDisposable
 		ChunkArrayDllImport.ChunkArray_SetRange(_nativeArray, index, count, data.FirstItem);
 	}
 
+	public static void Copy(ChunkArray from, int fromIndex, ChunkArray to, int toIndex, int count)
+	{
+		if (from == null)
+			throw new ArgumentNullException(nameof(from));
+			
+		if (to == null) 
+			throw new ArgumentNullException(nameof(to));
+			
+		if (!from.IsValid)
+			throw new InvalidOperationException("Source chunk array is not valid");
+			
+		if (!to.IsValid)
+			throw new InvalidOperationException("Destination chunk array is not valid");
+			
+		if (fromIndex < 0 || fromIndex >= from.Count)
+			throw new ArgumentOutOfRangeException(nameof(fromIndex), $"Index {fromIndex} is out of range [0, {from.Count - 1}]");
+			
+		if (toIndex < 0 || toIndex >= to.Count)
+			throw new ArgumentOutOfRangeException(nameof(toIndex), $"Index {toIndex} is out of range [0, {to.Count - 1}]");
+			
+		if (count < 0)
+			throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative");
+			
+		if (fromIndex + count > from.Count)
+			throw new ArgumentException($"Source range [fromIndex, fromIndex + count) = [{fromIndex}, {fromIndex + count}) is outside array bounds [0, {from.Count})");
+			
+		if (toIndex + count > to.Count)
+			throw new ArgumentException($"Destination range [toIndex, toIndex + count) = [{toIndex}, {toIndex + count}) is outside array bounds [0, {to.Count})");
+			
+		ChunkArrayDllImport.ChunkArray_Copy(from.NativeArrayPtr, fromIndex, to.NativeArrayPtr, toIndex, count);
+	}
 	
 	public void EnsureCapacity(int count)
 	{
@@ -337,8 +365,8 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 	/// </summary>
 	/// <param name="countInChunk">每个块中可容纳的元素数量</param>
 	/// <param name="initialCapacity">初始预分配的块数量</param>
-	public ChunkArray(int countInChunk, int initialCapacity)
-		: base(Unsafe.SizeOf<T>(), countInChunk, initialCapacity)
+	public ChunkArray(int countInChunk, int initialChunkCount)
+		: base(Unsafe.SizeOf<T>(), countInChunk, initialChunkCount)
 	{
 	}
 	
@@ -425,8 +453,8 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 	{
 		return this [index];
 	}
-
-	public void Copy(ChunkArray<T> from, int fromIndex, ChunkArray<T> to, int toIndex, int count)
+	
+	public static void Copy(ChunkArray<T> from, int fromIndex, ChunkArray<T> to, int toIndex, int count)
 	{
 		if (from == null)
 			throw new ArgumentNullException(nameof(from));
@@ -457,7 +485,6 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 			
 		ChunkArrayDllImport.ChunkArray_Copy(from.NativeArrayPtr, fromIndex, to.NativeArrayPtr, toIndex, count);
 	}
-
 
 	/// <summary>
 	/// 将数组中的元素复制到目标数组
@@ -515,11 +542,11 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 			throw new ArgumentException("Chunk size must be greater than zero", nameof(chunkSize));
 			
 		// 计算需要的块数量
-		int initialCapacity = (array.Length + chunkSize - 1) / chunkSize;
-		if (initialCapacity < 1) initialCapacity = 1;
+		int initialChunkCount = (array.Length + chunkSize - 1) / chunkSize;
+		if (initialChunkCount < 1) initialChunkCount = 1;
 		
 		// 创建ChunkArray实例
-		ChunkArray<T> chunkArray = new ChunkArray<T>(chunkSize, initialCapacity);
+		ChunkArray<T> chunkArray = new ChunkArray<T>(chunkSize, initialChunkCount);
 		
 		// 添加所有元素
 		foreach (T item in array)
@@ -529,6 +556,57 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 		
 		return chunkArray;
 	}
+	
+	public Enumerator GetEnumerator()
+	{
+		return new Enumerator(this);
+	}
+	
+	public Enumerator GetEnumerator(int index)
+    {
+        return new Enumerator(this, index);
+    }
+	
+	public ref struct Enumerator
+	{
+		private ChunkArray_Native* _array;	
+		private Chunk* chunkArr;
+		private int _currentChunkIndex;
+		private int _currentIndexInChunk;
+		
+		public Enumerator(ChunkArray<T> array, int startIndex = 0)
+		{
+			if(startIndex > array.Count)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), $"Index {startIndex} is out of range [0, {array.Count - 1}]");
+			_array = array.NativeArrayPtr;
+			chunkArr = array.NativeArrayPtr->Chunks;
+			_currentChunkIndex = startIndex / _array->ItemCount;
+			_currentIndexInChunk = startIndex % _array->ItemCount;
+		}
+		
+		public bool MoveNext()
+		{
+			if (chunkArr == null)
+				return false;
+				
+			_currentIndexInChunk++;
+			if (_currentIndexInChunk >= chunkArr[_currentChunkIndex].ItemCount)
+			{
+				_currentChunkIndex++;
+				if (_currentChunkIndex >= _array->ChunkCount)
+				{
+					chunkArr = null;
+					return false;
+				}
+				
+				_currentIndexInChunk = 0;
+			}
+			
+			return true;
+		}
+		
+		public ref T Current => ref *(T*)chunkArr[_currentChunkIndex].Data[_currentIndexInChunk];
+	} 
 }
 
 internal unsafe static class ChunkArrayDllImport
@@ -588,12 +666,12 @@ public static class ArrayRegistry
 	///     Gets an array of the specified type and capacity. Will use the registered factory if it exists, otherwise it will create a new array using reflection.
 	/// </summary>
 	/// <param name="type">The type of the array.</param>
-	/// <param name="capacity">The capacity of the array.</param>
+	/// <param name="initialChunkCount">The capacity of the array.</param>
 	/// <returns>The created array.</returns>
-	public static ChunkArray GetArray(ComponentType type, int countInChunk, int capacity)
+	public static ChunkArray GetArray(ComponentType type, int countInChunk, int initialChunkCount)
 	{
 		return _createFactories.TryGetValue(type.Id, out Func<int, int, ChunkArray> func) ? 
-			func(countInChunk, capacity) : 
+			func(countInChunk, initialChunkCount) : 
 			throw new NotSupportedException($"cannot create chunk array for {type.Type}");
 	}
 
@@ -603,6 +681,6 @@ public static class ArrayRegistry
 	/// <typeparam name="T">The type of the array.</typeparam>
 	private static class ArrayFactory<T> where T : unmanaged
 	{
-		public static readonly Func<int, int, ChunkArray> Create = (countInChunk, capacity) => new ChunkArray<T>(countInChunk, capacity);
+		public static readonly Func<int, int, ChunkArray> Create = (countInChunk, initialChunkCount) => new ChunkArray<T>(countInChunk, initialChunkCount);
 	}
 }
