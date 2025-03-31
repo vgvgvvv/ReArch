@@ -513,6 +513,8 @@ public partial class World
 			// Update capacity
 			Capacity += newArchetype.EntityCapacity - oldCapacity;
 		}
+		
+		EntityInfo.EnsureCapacity(Capacity);
 	}
 
 	[SkipLocalsInit]
@@ -545,6 +547,8 @@ public partial class World
 			// Update capacity
 			Capacity += newArchetype.EntityCapacity - oldCapacity;
 		}
+		
+		EntityInfo.EnsureCapacity(Capacity);
 	}
 }
 
@@ -596,6 +600,7 @@ public partial class World
 		}
 	}
 
+	[SkipLocalsInit]
 	public void Create(Span<Entity> createdEntities, in Signature signature, int amount)
 	{
 		var archetype = EnsureCapacity(in signature, amount);
@@ -612,6 +617,7 @@ public partial class World
 		AddEntityData(createdEntities, entityData, amount);
 	}
 	
+	[SkipLocalsInit]
 	public void Create<T>(int amount, in T cmp = default) where T : unmanaged
 	{
 		var archetype = EnsureCapacity<T>(amount);

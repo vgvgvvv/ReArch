@@ -1,3 +1,63 @@
 <#@ template language="C#" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+
+using System;
+using System.Runtime.CompilerServices;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public partial class World
+{
+    <#
+    for (var index = 2; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var parameters = AppendGenericInDefaultParams(index, "ComponentValue", hasNullable:false);
+        var getFirsts = AppendGetFirstComponentFrom(index);
+        var getComponents = AppendGetComponentsFromFirst(index);
+
+        var assignValues = new StringBuilder();
+        var assignValuesEvents = new StringBuilder();
+        for (var i = 0; i < index; i++)
+        {
+            assignValues.AppendLine($"t{i}Component = t{i}ComponentValue;");
+            assignValuesEvents.AppendLine($"OnComponentSet<T{i}>(entity);");
+        }
+    #>
+
+    public void Set<<#= generics #>>(in QueryDescription queryDescription, <#= parameters #>)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+			foreach (ref var component in archetype.GetComponents<T<#= i #>>())
+			{
+				component = t<#= i #>ComponentValue;
+			}
+<#
+        }
+#>
+        }
+
+	}
+
+   
+    <#
+    }
+    #>
+}
+

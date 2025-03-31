@@ -62,6 +62,50 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>Query.WithNone.cs</LastGenOutput>
       </None>
+      <None Update="Templates\World\Basic\World.Add.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.Add.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.AddWithQueryDescription.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.AddWithQueryDescription.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.Create.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.Create.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.CreateBulk.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.CreateBulk.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.EnsureCapacity.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.EnsureCapacity.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.Get.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.Get.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.Has.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.Has.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.RemoveWithQueryDescription.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.RemoveWithQueryDescription.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.Remove.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.Remove.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.Set.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.Set.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Basic\World.SetWithQueryDescription.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.SetWithQueryDescription.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -124,6 +168,61 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>Query.WithNone.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.Add.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.Add.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.AddWithQueryDescription.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.AddWithQueryDescription.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.Create.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.Create.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.CreateBulk.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.CreateBulk.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.EnsureCapacity.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.EnsureCapacity.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.Get.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.Get.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.Has.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.Has.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.RemoveWithQueryDescription.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.RemoveWithQueryDescription.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.Remove.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.Remove.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.Set.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.Set.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Basic\World.SetWithQueryDescription.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.SetWithQueryDescription.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 

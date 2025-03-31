@@ -1,3 +1,60 @@
 <#@ template language="C#" #>
+<#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+
+
+using ReArch.Core.Utils;
+
+
+namespace ReArch.Core;
+public partial class World
+{
+    <#
+for (var index = 2; index < Amount; index++)
+{
+    var generics = AppendGenerics(index);
+    var parameters = AppendGenericInDefaultParams(index, hasNullable:false);
+    var inParameters = InsertGenericInParams(index);
+
+    var addEvents = new StringBuilder();
+    for (var i = 0; i < index; i++)
+        addEvents.AppendLine($"OnComponentAdded<T{i}>(entity);");
+#>
+
+
+    [StructuralChange]
+    public void Create<<#= generics #>>(int amount, <#= parameters #>)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+    {
+        var archetype = EnsureCapacity<<#= generics #>>(amount);
+
+        // Prepare entities, slots and data
+        using var entityArray =  Pool<Entity>.Rent(amount);
+        using var entityDataArray =  Pool<EntityData>.Rent(amount);
+        var entities = entityArray.AsSpan();
+        var entityData = entityDataArray.AsSpan();
+
+        // Create entities
+        GetNextEntitiesIn(archetype, entities, entityData, amount);
+        archetype.AddAll(entities, amount);
+
+        // Fill entities
+        var firstSlot = entityData[0].Index;
+        var lastSlot = entityData[amount - 1].Index;
+        archetype.SetRange<<#= generics #>>(in lastSlot, in firstSlot, <#= inParameters #>);
+
+        // Add entities to entityinfo
+        AddEntityData(entities, entityData, amount);
+    }
+<#
+}
+#>
+}

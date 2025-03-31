@@ -1,3 +1,68 @@
 <#@ template language="C#" #>
+<#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+
+using System;
+using System.Runtime.CompilerServices;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public partial class World
+{
+    <#
+    for (var index = 2; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var parameters = AppendGenericInDefaultParams(index, hasNullable:false);
+        var inParameters = InsertGenericInParams(index);
+
+        var getIds = new StringBuilder();
+        var setIds = new StringBuilder();
+        var addEvents = new StringBuilder();
+        for (var i = 0; i < index; i++)
+        {
+            getIds.AppendLine($"var id{i} = Component<T{i}>.ComponentType.Id;");
+            setIds.AppendLine($"spanBitSet.SetBit(id{i});");
+            // addEvents.AppendLine($"OnComponentAdded<T{i}>(entity);");
+        }
+    #>
+
+
+	[StructuralChange]
+	internal void Add<<#= generics #>>(Entity entity, out Archetype newArchetype, out int addedIndex)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+	{
+		var oldArchetype = EntityInfo.GetArchetype(entity.Id);
+		var signature = Component<<#= generics #>>.Signature;
+		var newSignature = Signature.Add(oldArchetype.Signature, signature);
+		newArchetype = GetOrCreateArchetype(newSignature);
+		
+		Move(entity, oldArchetype, newArchetype, out addedIndex);
+	}
+
+    public void Add<<#= generics #>>(Entity entity, <#= parameters #>)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+	{
+		Add<<#= generics #>>(entity, out var newArchetype, out var slot);
+		newArchetype.Set(ref slot, <#= inParameters #>);
+	}
+ 
+    <#
+    }
+    #>
+}

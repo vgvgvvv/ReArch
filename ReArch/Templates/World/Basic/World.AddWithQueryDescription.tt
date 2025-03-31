@@ -1,3 +1,76 @@
 <#@ template language="C#" #>
+<#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+
+using System;
+using System.Runtime.CompilerServices;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public partial class World
+{
+    <#
+    for (var index = 2; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var parameters = AppendGenericInDefaultParams(index, hasNullable:false);
+        var inParameters = InsertGenericInParams(index);
+
+        var setIds = new StringBuilder();
+        var addEvents = new StringBuilder();
+        for (var i = 0; i < index; i++)
+        {
+            setIds.AppendLine($"            spanBitSet.SetBit(Component<T{i}>.ComponentType.Id);");
+            addEvents.AppendLine($"            OnComponentAdded<T{i}>(archetype);");
+        }
+    #>
+
+	[SkipLocalsInit]
+    [StructuralChange]
+	public void Add<<#= generics #>>(in QueryDescription queryDescription, <#= parameters #>)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			if (archetype.EntityCount == 0 || archetype.Has<<#= generics #>>())
+			{
+				continue;
+			}
+			
+			var oldArchetype = archetype;
+			var count = oldArchetype.EntityCount;
+			var newSignature = Signature.Add(archetype.Signature, Component<<#= generics #>>.Signature);
+			// create new archetype
+			var newArchetype = GetOrCreateArchetype(newSignature);
+			var newArchetypeIndex = newArchetype.EntityCount;
+			// move entityinfo to new archetype
+			EntityInfo.MoveToAnotherArchetype(oldArchetype, newArchetype, newArchetypeIndex);
+			
+			var oldCapacity = oldArchetype.EntityCapacity;
+			// copy entity & component after new archetype
+			Archetype.CopyAfter(oldArchetype, newArchetype);
+			newArchetype.SetRange(newArchetypeIndex, count, <#= inParameters #>);
+			// clear old archetype
+			oldArchetype.Clear();
+			
+			// Update capacity
+			Capacity += newArchetype.EntityCapacity - oldCapacity;
+		}
+
+		EntityInfo.EnsureCapacity(Capacity);
+	}
+
+    
+    <#
+    }
+    #>
+}

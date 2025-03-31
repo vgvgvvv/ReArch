@@ -1,3 +1,62 @@
 <#@ template language="C#" #>
+<#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+
+// TODO: Move create with T0 into world.cs?
+
+using System;
+using System.Runtime.CompilerServices;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public partial class World
+{
+<#
+    for (var index = 1; index < Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var parameters = AppendGenericInDefaultParams(index, hasNullable:false);
+        var inParameters = InsertGenericInParams(index);
+
+        var addEvents = new StringBuilder();
+        for (var i = 0; i < index; i++)
+            addEvents.AppendLine($"OnComponentAdded<T{i}>(entity);");
+#>
+
+
+    [StructuralChange]
+    public Entity Create<<#= generics #>>(<#= parameters #>)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+    {
+        var signature = Component<<#= generics #>>.Signature;
+
+        // Create new entity and put it to the back of the array
+        GetOrCreateNextEntity(out var entity);
+
+        // Add to archetype & mapping
+        var archetype = GetOrCreateArchetype(signature);
+        var allocatedEntities = archetype.Add<<#= generics #>>(entity, out var slot, <#= inParameters #>);
+
+        // Resize map & Array to fit all potential new entities
+        Capacity += allocatedEntities;
+        EntityInfo.EnsureCapacity(Capacity);
+
+        // Map
+        EntityInfo.Add(entity.Id, archetype, slot);
+
+        return entity;
+    }
+<#
+    }
+#>
+}
+
+

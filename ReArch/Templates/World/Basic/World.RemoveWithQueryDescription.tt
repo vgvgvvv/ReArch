@@ -1,3 +1,74 @@
 <#@ template language="C#" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+
+using System;
+using System.Runtime.CompilerServices;
+using ReArch.Core;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public partial class World
+{
+    <#
+    for (var index = 2; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var clearIds = new StringBuilder();
+        var removeEvents = new StringBuilder();
+        for (var i = 0; i < index; i++)
+        {
+            clearIds.AppendLine($"spanBitSet.ClearBit(Component<T{i}>.ComponentType.Id);");
+            removeEvents.AppendLine($"OnComponentRemoved<T{i}>(archetype);");
+        }
+    #>
+
+
+[SkipLocalsInit]
+	[StructuralChange]
+	public void Remove<<#= generics #>>(in QueryDescription queryDescription)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+			// Archetype without T shouldnt be skipped to prevent undefined behaviour.
+			if (archetype.EntityCount <= 0 || !archetype.Has<<#= generics #>>())
+			{
+				continue;
+			}
+			
+			var oldArchetype = archetype;
+			var newSignature = Signature.Add(archetype.Signature, Component<<#= generics #>>.Signature);
+			// create new archetype
+			var newArchetype = GetOrCreateArchetype(newSignature);
+			var newArchetypeIndex = newArchetype.EntityCount;
+			// move entityinfo to new archetype
+			EntityInfo.MoveToAnotherArchetype(oldArchetype, newArchetype, newArchetypeIndex);
+			
+			var oldCapacity = oldArchetype.EntityCapacity;
+			// copy entity & component after new archetype
+			Archetype.CopyAfter(oldArchetype, newArchetype);
+			// clear old archetype
+			oldArchetype.Clear();
+			
+			// Update capacity
+			Capacity += newArchetype.EntityCapacity - oldCapacity;
+		}
+
+		EntityInfo.EnsureCapacity(Capacity);
+	}
+
+    
+    <#
+    }
+    #>
+}

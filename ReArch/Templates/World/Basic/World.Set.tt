@@ -1,3 +1,48 @@
 <#@ template language="C#" #>
+<#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+
+using System;
+using System.Runtime.CompilerServices;
+using ReArch.Core;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public partial class World
+{
+    <#
+    for (var index = 2; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var parameters = AppendGenericInDefaultParams(index, hasNullable:false);
+        var inParameters = InsertGenericInParams(index);
+
+        var events = new StringBuilder();
+        for (var i = 0; i < index; i++)
+        {
+            events.AppendLine($"        OnComponentSet<T{i}>(entity);");
+        }
+    #>
+
+	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+	{
+		var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+		var index = entitySlot.Index;
+		var archetype = entitySlot.Archetype;
+		archetype.Set<<#= generics #>>(ref index,  <#= inParameters #>);
+	}
+	
+    <#
+    }
+    #>
+}
+

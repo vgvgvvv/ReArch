@@ -2,7 +2,7 @@
 
 using ReArch.Core;
 
-namespace Arch.Core;
+namespace ReArch.Core;
 
 /// <summary>
 ///     Marks a particular public method on a <see cref="World"/> as causing a structural change.

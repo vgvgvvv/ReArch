@@ -1,3 +1,38 @@
 <#@ template language="C#" #>
+<#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+
+using System.Diagnostics.Contracts;
+
+namespace ReArch.Core
+{
+    public partial class World
+    {
+<#
+for (var index = 2; index <= Amount; index++)
+{
+    var generics = AppendGenerics(index);
+#>
+
+        [Pure]
+        public Components<<#= generics #>> Get<<#= generics #>>(Entity entity)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+        {
+            var entitySlot = EntityInfo.GetEntitySlot(entity.Id);
+            var index = entitySlot.Index;
+            var archetype = entitySlot.Archetype;
+            return archetype.Get<<#= generics #>>(ref index);
+        }
+<#
+}
+#>
+    }
+}
