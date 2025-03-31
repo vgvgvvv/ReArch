@@ -1,7 +1,8 @@
 <#@ template language="C#" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ include file="../Helpers.ttinclude" #><#@ import namespace="System.Linq" #>
+<#@ include file="../Helpers.ttinclude" #>
+<#@ import namespace="System.Linq" #>
 
 using System;
 using ReArch.Core.Job;
@@ -15,8 +16,7 @@ namespace ReArch.Core;
         var getComponents = AppendGetComponentsFromFirst(index);
         var insertParams = InsertGenericRefParams(index);
 #>
-
-public struct IForEachWithEntityJob<<#= generics #>> : IArchetypeJob
+public struct ForEachJob<<#= generics #>> : IArchetypeJob
 <#
         for (var i = 0; i < index; i++)
         {
@@ -26,35 +26,33 @@ public struct IForEachWithEntityJob<<#= generics #>> : IArchetypeJob
         }
 #>
 {
-    public IForEachWithEntity<<#= generics #>> ForEach;
+    public ForEach<<#= generics #>> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
-        var entities = archetype.Entities;
-        var entitiesEnumerator = entities.GetEnumerator();
 <#
         List<int> componentIndices = new List<int>();
         for (var i = 0; i < index; i++)
         {
             componentIndices.Add(i);
 #>
-            var t<#= i #>Components = archetype.GetComponents<T<#= i #>>();
-            var t<#= i #>Enumerator = t<#= i #>Components.GetEnumerator();
+        var t<#= i #>Components = archetype.GetComponents<T<#= i #>>();
+        var t<#= i #>Enumerator = t<#= i #>Components.GetEnumerator();
 <#
         }
-        
+
         var MoveNextCondition = string.Join("&&", componentIndices.Select(i => $"t{i}Enumerator.MoveNext()"));
         var UpdateParams = string.Join(", ", componentIndices.Select(i => $"ref t{i}Enumerator.Current"));
 #>
         
-        while(entitiesEnumerator.MoveNext() && <#= MoveNextCondition #>)
+        while(<#= MoveNextCondition #>)
         {
-            ForEach.Update(entitiesEnumerator.Current, <#= UpdateParams #>);
+            ForEach(<#= UpdateParams #>);
         }
     }
 }
 
-
 <#
     }
 #>
+

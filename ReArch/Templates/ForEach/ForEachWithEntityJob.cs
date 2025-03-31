@@ -1,13 +1,13 @@
 ﻿
+
 using System;
 using ReArch.Core.Job;
 
 namespace ReArch.Core;
-
-public struct IForEachWithEntityJob<T0> : IArchetypeJob
+public struct ForEachWithEntityJob<T0> : IArchetypeJob
         where T0 : unmanaged
 {
-    public IForEachWithEntity<T0> ForEach;
+    public ForEachWithEntity<T0> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -18,18 +18,16 @@ public struct IForEachWithEntityJob<T0> : IArchetypeJob
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
 {
-    public IForEachWithEntity<T0, T1> ForEach;
+    public ForEachWithEntity<T0, T1> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -42,19 +40,17 @@ public struct IForEachWithEntityJob<T0, T1> : IArchetypeJob
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2> ForEach;
+    public ForEachWithEntity<T0, T1, T2> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -69,20 +65,18 @@ public struct IForEachWithEntityJob<T0, T1, T2> : IArchetypeJob
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -99,21 +93,19 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3> : IArchetypeJob
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -132,14 +124,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4> : IArchetypeJob
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -147,7 +137,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5> : IArchetypeJob
         where T4 : unmanaged
         where T5 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -168,14 +158,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5> : IArchetypeJob
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -184,7 +172,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6> : IArchetypeJob
         where T5 : unmanaged
         where T6 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -207,14 +195,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6> : IArchetypeJob
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -224,7 +210,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7> : IArchetype
         where T6 : unmanaged
         where T7 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -249,14 +235,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7> : IArchetype
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -267,7 +251,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8> : IArche
         where T7 : unmanaged
         where T8 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -294,14 +278,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8> : IArche
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -313,7 +295,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IA
         where T8 : unmanaged
         where T9 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -342,14 +324,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> : IA
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -362,7 +342,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
         where T9 : unmanaged
         where T10 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -393,14 +373,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -414,7 +392,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T10 : unmanaged
         where T11 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -447,14 +425,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -469,7 +445,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T11 : unmanaged
         where T12 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -504,14 +480,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -527,7 +501,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T12 : unmanaged
         where T13 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -564,14 +538,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -588,7 +560,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T13 : unmanaged
         where T14 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -627,14 +599,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -652,7 +622,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T14 : unmanaged
         where T15 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -693,14 +663,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -719,7 +687,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T15 : unmanaged
         where T16 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -762,14 +730,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -789,7 +755,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T16 : unmanaged
         where T17 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -834,14 +800,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext()&&t17Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -862,7 +826,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T17 : unmanaged
         where T18 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -909,14 +873,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext()&&t17Enumerator.MoveNext()&&t18Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -938,7 +900,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T18 : unmanaged
         where T19 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -987,14 +949,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext()&&t17Enumerator.MoveNext()&&t18Enumerator.MoveNext()&&t19Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -1017,7 +977,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T19 : unmanaged
         where T20 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -1068,14 +1028,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext()&&t17Enumerator.MoveNext()&&t18Enumerator.MoveNext()&&t19Enumerator.MoveNext()&&t20Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -1099,7 +1057,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T20 : unmanaged
         where T21 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -1152,14 +1110,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext()&&t17Enumerator.MoveNext()&&t18Enumerator.MoveNext()&&t19Enumerator.MoveNext()&&t20Enumerator.MoveNext()&&t21Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current, ref t21Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current, ref t21Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -1184,7 +1140,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T21 : unmanaged
         where T22 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -1239,14 +1195,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext()&&t17Enumerator.MoveNext()&&t18Enumerator.MoveNext()&&t19Enumerator.MoveNext()&&t20Enumerator.MoveNext()&&t21Enumerator.MoveNext()&&t22Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current, ref t21Enumerator.Current, ref t22Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current, ref t21Enumerator.Current, ref t22Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -1272,7 +1226,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T22 : unmanaged
         where T23 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -1329,14 +1283,12 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext()&&t17Enumerator.MoveNext()&&t18Enumerator.MoveNext()&&t19Enumerator.MoveNext()&&t20Enumerator.MoveNext()&&t21Enumerator.MoveNext()&&t22Enumerator.MoveNext()&&t23Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current, ref t21Enumerator.Current, ref t22Enumerator.Current, ref t23Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current, ref t21Enumerator.Current, ref t22Enumerator.Current, ref t23Enumerator.Current);
         }
     }
 }
 
-
-
-public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24> : IArchetypeJob
+public struct ForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24> : IArchetypeJob
         where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -1363,7 +1315,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         where T23 : unmanaged
         where T24 : unmanaged
 {
-    public IForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24> ForEach;
+    public ForEachWithEntity<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24> ForEach;
 
     public void Execute(ref Archetype archetype)
     {
@@ -1422,7 +1374,7 @@ public struct IForEachWithEntityJob<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10,
         
         while(entitiesEnumerator.MoveNext() && t0Enumerator.MoveNext()&&t1Enumerator.MoveNext()&&t2Enumerator.MoveNext()&&t3Enumerator.MoveNext()&&t4Enumerator.MoveNext()&&t5Enumerator.MoveNext()&&t6Enumerator.MoveNext()&&t7Enumerator.MoveNext()&&t8Enumerator.MoveNext()&&t9Enumerator.MoveNext()&&t10Enumerator.MoveNext()&&t11Enumerator.MoveNext()&&t12Enumerator.MoveNext()&&t13Enumerator.MoveNext()&&t14Enumerator.MoveNext()&&t15Enumerator.MoveNext()&&t16Enumerator.MoveNext()&&t17Enumerator.MoveNext()&&t18Enumerator.MoveNext()&&t19Enumerator.MoveNext()&&t20Enumerator.MoveNext()&&t21Enumerator.MoveNext()&&t22Enumerator.MoveNext()&&t23Enumerator.MoveNext()&&t24Enumerator.MoveNext())
         {
-            ForEach.Update(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current, ref t21Enumerator.Current, ref t22Enumerator.Current, ref t23Enumerator.Current, ref t24Enumerator.Current);
+            ForEach(entitiesEnumerator.Current, ref t0Enumerator.Current, ref t1Enumerator.Current, ref t2Enumerator.Current, ref t3Enumerator.Current, ref t4Enumerator.Current, ref t5Enumerator.Current, ref t6Enumerator.Current, ref t7Enumerator.Current, ref t8Enumerator.Current, ref t9Enumerator.Current, ref t10Enumerator.Current, ref t11Enumerator.Current, ref t12Enumerator.Current, ref t13Enumerator.Current, ref t14Enumerator.Current, ref t15Enumerator.Current, ref t16Enumerator.Current, ref t17Enumerator.Current, ref t18Enumerator.Current, ref t19Enumerator.Current, ref t20Enumerator.Current, ref t21Enumerator.Current, ref t22Enumerator.Current, ref t23Enumerator.Current, ref t24Enumerator.Current);
         }
     }
 }

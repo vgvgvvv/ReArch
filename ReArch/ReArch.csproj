@@ -142,6 +142,30 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>Entity.Set.cs</LastGenOutput>
       </None>
+      <None Update="Templates\World\Query\World.EntityQuery.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.EntityQuery.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\ForEach\ForEach.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ForEach.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Query\World.Query.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.Query.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\ForEach\ForEachJob.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ForEachJob.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\ForEach\ForEachWithEntity.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ForEachWithEntity.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\ForEach\ForEachWithEntityJob.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ForEachWithEntityJob.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -304,6 +328,36 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>Entity.Set.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Query\World.EntityQuery.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.EntityQuery.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\ForEach\ForEach.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ForEach.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Query\World.Query.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.Query.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\ForEach\ForEachJob.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ForEachJob.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\ForEach\ForEachWithEntity.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ForEachWithEntity.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\ForEach\ForEachWithEntityJob.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ForEachWithEntityJob.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 

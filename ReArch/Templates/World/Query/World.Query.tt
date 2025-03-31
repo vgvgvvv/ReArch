@@ -1,3 +1,57 @@
 <#@ template language="C#" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #>
+<#@ import namespace="System.Linq" #>
+
+// TODO: Move query with T0 into world.cs?
+
+namespace ReArch.Core;
+public partial class World
+{
+<#
+    for (var index = 1; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var getFirstElement = AppendGetFirstComponentFrom(index);
+        var getComponents = AppendGetComponentsFromFirst(index);
+        var insertParams = InsertGenericRefParams(index);
+#>
+
+
+    public void Query<<#= generics #>>(in QueryDescription queryDescription, ForEach<<#= generics #>> forEntity)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+	{
+		var query = Query(in queryDescription);
+		foreach (var archetype in query.GetArchetypeIterator())
+		{
+<#
+        var indexList = new List<int>();
+        for (var i = 0; i < index; i++)
+        {
+	        indexList.Add(i);
+#>
+    		var t<#= i #>Enumerator = archetype.GetComponents<T<#= i #>>().GetEnumerator();
+<#
+        }
+
+        var moveNext = string.Join(" && ", indexList.Select(i => $"t{i}Enumerator.MoveNext()"));
+        var intputParam = string.Join(", ", indexList.Select(i => $"ref t{i}Enumerator.Current"));
+#>
+			while(<#= moveNext #>)
+			{
+				forEntity(<#= intputParam #>);
+			}
+		}
+	}
+<#
+    }
+#>
+}
