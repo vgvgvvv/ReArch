@@ -1,3 +1,36 @@
 <#@ template language="C#" #>
+<#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../Helpers.ttinclude" #>
+
+using System;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public static partial class EntityExtensions
+{
+<#
+    for (var index = 2; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var parameters = AppendGenericInDefaultParams(index, hasNullable:false);
+        var insertParams = InsertGenericInParams(index);
+#>
+    public static void Set<<#= generics #>>(this Entity entity, <#= parameters #>)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+    {
+        var world = World.Worlds[entity.WorldId];
+        world.Set<<#= generics #>>(entity, <#= insertParams #>);
+    }
+
+<#
+    }
+#>
+}

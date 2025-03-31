@@ -1,3 +1,36 @@
 <#@ template language="C#" #>
+<#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../Helpers.ttinclude" #>
+
+using System;
+using System.Diagnostics.Contracts;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public static partial class EntityExtensions
+{
+<#
+    for (var index = 2; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+#>
+    [Pure]
+    public static Components<<#= generics #>> Get<<#= generics #>>(this Entity entity)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+    {
+        var world = World.Worlds[entity.WorldId];
+        return world.Get<<#= generics #>>(entity);
+    }
+
+<#
+    }
+#>
+}

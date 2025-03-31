@@ -122,6 +122,26 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>IForEachWithEntityJob.cs</LastGenOutput>
       </None>
+      <None Update="Templates\Entity\Entity.Add.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Entity.Add.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Entity\Entity.Get.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Entity.Get.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Entity\Entity.Has.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Entity.Has.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Entity\Entity.Remove.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Entity.Remove.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Entity\Entity.Set.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Entity.Set.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -259,6 +279,31 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>IForEachWithEntityJob.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Entity\Entity.Add.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Entity.Add.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Entity\Entity.Get.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Entity.Get.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Entity\Entity.Has.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Entity.Has.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Entity\Entity.Remove.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Entity.Remove.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Entity\Entity.Set.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Entity.Set.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 
