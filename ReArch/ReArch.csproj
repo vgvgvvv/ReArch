@@ -106,6 +106,22 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>World.SetWithQueryDescription.cs</LastGenOutput>
       </None>
+      <None Update="Templates\ForEach\IForEach.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>IForEach.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\ForEach\IForEachJob.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>IForEachJob.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\ForEach\IForEachWithEntity.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>IForEachWithEntity.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\ForEach\IForEachWithEntityJob.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>IForEachWithEntityJob.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -223,6 +239,26 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>World.SetWithQueryDescription.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\ForEach\IForEach.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>IForEach.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\ForEach\IForEachJob.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>IForEachJob.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\ForEach\IForEachWithEntity.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>IForEachWithEntity.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\ForEach\IForEachWithEntityJob.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>IForEachWithEntityJob.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 

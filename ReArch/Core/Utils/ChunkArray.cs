@@ -606,7 +606,10 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 				_currentIndexInChunk = 0;
 			}
 
-			_count--;
+			if (_count > 0)
+			{
+				_count--;
+			}
 			
 			return true;
 		}

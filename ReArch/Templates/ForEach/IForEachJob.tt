@@ -1,0 +1,60 @@
+<#@ template language="C#" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../Helpers.ttinclude" #><#@ import namespace="System.Linq" #>
+
+using System;
+using System.Runtime.CompilerServices;
+using ReArch.Core.Job;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+<#
+    for (var index = 1; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var getFirstElement = AppendGetFirstComponentFrom(index);
+        var getComponents = AppendGetComponentsFromFirst(index);
+        var insertParams = InsertGenericRefParams(index);
+#>
+
+public struct IForEachJob<T, <#= generics #>> : IArchetypeJob where T : struct, IForEach<<#= generics #>>
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+{
+    public T ForEach;
+
+    public void Execute(ref Archetype archetype)
+    {
+<#
+        List<int> componentIndices = new List<int>();
+        for (var i = 0; i < index; i++)
+        {
+            componentIndices.Add(i);
+#>
+            var t<#= i #>Components = archetype.GetComponents<T<#= i #>>();
+            var t<#= i #>Enumerator = t<#= i #>Components.GetEnumerator();
+<#
+        }
+
+        var MoveNextCondition = string.Join("&&", componentIndices.Select(i => $"t{i}Enumerator.MoveNext()"));
+        var UpdateParams = string.Join(", ", componentIndices.Select(i => $"ref t{i}Enumerator.Current"));
+#>
+        
+        while(<#= MoveNextCondition #>)
+        {
+            ForEach.Update(<#= UpdateParams #>);
+        }
+    }
+}
+
+
+<#
+    }
+#>
