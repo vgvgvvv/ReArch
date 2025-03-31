@@ -15,7 +15,7 @@ extern "C"
     {
         int32 ItemSize;
         int32 ItemCount;
-        void* Data;
+        uint8* Data;
     };
 
     struct ChunkArray
