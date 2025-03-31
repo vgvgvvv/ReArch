@@ -18,6 +18,14 @@ public partial struct QueryDescription
 
     [UnscopedRef]
     public ref QueryDescription WithAll<<#= generics #>>()
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
     {
         All = Component<<#= generics #>>.Signature;
         Build();

@@ -30,6 +30,14 @@ public partial class Archetype
 #>
 
    public bool Has<<#= generics #>>()
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
     {
         <#= Indent(getIds, 8) #>
         return <#= isSet.ToString() #>;

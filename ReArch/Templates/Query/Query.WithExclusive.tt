@@ -15,8 +15,17 @@ public partial struct QueryDescription
         var generics = AppendGenerics(index);
     #>
 
+
     [UnscopedRef]
     public ref QueryDescription WithExclusive<<#= generics #>>()
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
     {
         Exclusive = Component<<#= generics #>>.Signature;
         Build();

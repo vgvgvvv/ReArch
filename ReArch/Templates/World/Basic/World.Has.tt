@@ -18,6 +18,14 @@ public partial class World
 
     [Pure]
     public bool Has<<#= generics #>>(Entity entity)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
     {
         var archetype = EntityInfo.GetArchetype(entity.Id);
         return archetype.Has<<#= generics #>>();

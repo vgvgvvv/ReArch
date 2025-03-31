@@ -18,6 +18,14 @@ namespace ReArch.Core.Utils;
 
 /// <inheritdoc cref="Component"/>
 public static class Component<<#= generics #>>
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
 {
     internal static readonly int Id;
 
