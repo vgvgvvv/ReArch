@@ -1,11 +1,15 @@
 <#@ template language="C#" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ include file="../../Helpers.ttinclude" #>
+<#@ include file="../../Helpers.ttinclude" #><#@ import namespace="System.Linq" #>
 
 using System;
 
 namespace ReArch.Core;
+
+public partial class World
+{
+
 <#
     for (var index = 1; index <= Amount; index++)
     {
@@ -15,8 +19,45 @@ namespace ReArch.Core;
         var insertParams = InsertGenericRefParams(index);
 #>
 
-
+        public void Query<<#= generics #>>(in QueryDescription description, ForEachWithEntity<<#= generics #>> forEach)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+                where T<#= i #> : unmanaged
+<#
+        }
+#>
+        {
+            var query = Query(in description);
+            foreach (var archetype in query.GetArchetypeIterator())
+            {
+                var entities = archetype.Entities;
+                var entitiesEnumerator = entities.GetEnumerator();
+<#
+        List<int> indexs = new();
+        for (var i = 0; i < index; i++)
+        {
+                indexs.Add(i);
+#>
+                var t<#= i #>Components = archetype.GetComponents<T<#= i #>>();
+                var t<#= i #>Enumerator = t<#= i #>Components.GetEnumerator();
+<#
+        }
+        
+        var moveNextCondition = string.Join(" && ", indexs.Select(i => $"t{i}Enumerator.MoveNext()"));
+        var updateParams = string.Join(", ", indexs.Select(i => $"ref t{i}Enumerator.Current"));
+#>
+                while (entitiesEnumerator.MoveNext() && <#= moveNextCondition #>)
+                {
+                    forEach(entitiesEnumerator.Current, <#= updateParams #>);
+                }
+                
+            }
+        }
+    
 <#
     }
 #>
 
+}
