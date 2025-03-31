@@ -13,4 +13,78 @@
       <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Templates\Archetype\Archetype.Add.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Archetype.Add.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Archetype\Archetype.Has.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Archetype.Has.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Component\Component.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Component.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Component\Compontents.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Compontents.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Archetype\Archetype.Get.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Archetype.Get.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Archetype\Archetype.Set.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Archetype.Set.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Archetype\Archetype.SetRange.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Archetype.SetRange.cs</LastGenOutput>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Templates\Archetype\Archetype.Add.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Archetype.Add.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Archetype\Archetype.Has.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Archetype.Has.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Component\Component.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Component.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Component\Compontents.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Compontents.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Archetype\Archetype.Get.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Archetype.Get.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Archetype\Archetype.Set.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Archetype.Set.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\Archetype\Archetype.SetRange.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Archetype.SetRange.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Templates\Query\" />
+      <Folder Include="Templates\World\" />
+    </ItemGroup>
+
 </Project>

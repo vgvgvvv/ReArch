@@ -10,6 +10,7 @@ using ReArch.Core.Utils;
 namespace ReArch.Core;
 public partial class Archetype
 {
+
 <#
     for (var index = 2; index <= Amount; index++)
     {
@@ -17,7 +18,8 @@ public partial class Archetype
         var parameters = AppendGenericInDefaultParams(index, hasNullable:false);
         var insertParameters = InsertGenericInParams(index);
 #>
-    internal void Set<<#= generics #>>(ref int index, <#= parameters #>)
+
+    internal void SetRange<<#= generics #>>(in int fromIndex, in int toIndex,  <#= parameters #>)
 <#
         for (var i = 0; i < index; i++)
         {
@@ -27,11 +29,17 @@ public partial class Archetype
         }
 #>
     {
-       <#
+<#
         for (var i = 0; i < index; i++)
         {
 #>
-         GetComponents<T<#= i #>>()[index] = t<#= i #>Component;
+        {
+            var enumerator = GetComponents<T<#= i #>>().GetEnumerator(fromIndex, toIndex - fromIndex);
+            do
+            {
+                enumerator.Current = t<#= i #>Component;
+            } while (enumerator.MoveNext());
+        }
 <#
         }
 #>
@@ -40,4 +48,6 @@ public partial class Archetype
 <#
     }
 #>
+
+
 }

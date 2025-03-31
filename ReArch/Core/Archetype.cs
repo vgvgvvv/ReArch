@@ -92,7 +92,7 @@ public sealed class Archetypes : IDisposable
 
 }
 
-public sealed unsafe partial  class Archetype
+public sealed unsafe partial class Archetype
 {
 	private readonly int[] _componentIdToArrayIndex;
 	
@@ -103,7 +103,7 @@ public sealed unsafe partial  class Archetype
 	public ChunkArray[] Components { get; }
 	public int EntitiesPerChunk { get; }
 	public Signature Signature { get; }
-	public BitSet BitSet { get; }
+	public BitSet ComponentBitSet { get; }
 	
 	public int EntityCount
 	{
@@ -126,7 +126,7 @@ public sealed unsafe partial  class Archetype
 		}
 
 		// The bitmask/set
-		BitSet = signature.ToBitSet();
+		ComponentBitSet = signature.ToBitSet();
 		_componentIdToArrayIndex = signature.Components.ToLookupArray();
 	}
 
@@ -239,7 +239,7 @@ public sealed unsafe partial  class Archetype
 	public bool Has<T>() where T : unmanaged
 	{
 		var id = Component<T>.ComponentType.Id;
-		return BitSet.IsSet(id);
+		return ComponentBitSet.IsSet(id);
 	}
 
 	internal ref T Get<T>(scoped ref int index) where T : unmanaged
@@ -286,7 +286,7 @@ public sealed unsafe partial class Archetype
 	public bool Has(ComponentType type)
 	{
 		var id = type.Id;
-		return BitSet.IsSet(id);
+		return ComponentBitSet.IsSet(id);
 	}
 
 	internal object? Get(int index, ComponentType type)

@@ -562,9 +562,9 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 		return new Enumerator(this);
 	}
 	
-	public Enumerator GetEnumerator(int index)
+	public Enumerator GetEnumerator(int index, int count = -1)
     {
-        return new Enumerator(this, index);
+        return new Enumerator(this, index, count);
     }
 	
 	public ref struct Enumerator
@@ -573,8 +573,9 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 		private Chunk* chunkArr;
 		private int _currentChunkIndex;
 		private int _currentIndexInChunk;
-		
-		public Enumerator(ChunkArray<T> array, int startIndex = 0)
+		private int _count;
+
+		public Enumerator(ChunkArray<T> array, int startIndex = 0, int count = -1)
 		{
 			if(startIndex > array.Count)
                 throw new ArgumentOutOfRangeException(nameof(startIndex), $"Index {startIndex} is out of range [0, {array.Count - 1}]");
@@ -582,10 +583,13 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 			chunkArr = array.NativeArrayPtr->Chunks;
 			_currentChunkIndex = startIndex / _array->ItemCount;
 			_currentIndexInChunk = startIndex % _array->ItemCount;
+			_count = count;
 		}
 		
 		public bool MoveNext()
 		{
+			if(_count == 0)
+				return false;
 			if (chunkArr == null)
 				return false;
 				
@@ -601,6 +605,8 @@ public sealed unsafe class ChunkArray<T> : ChunkArray where T : unmanaged
 				
 				_currentIndexInChunk = 0;
 			}
+
+			_count--;
 			
 			return true;
 		}

@@ -371,7 +371,7 @@ public partial class Query : IEquatable<Query>
         _matchingArchetypes.Clear();
         foreach (var archetype in allArchetypes)
         {
-            var matches = Matches(archetype.BitSet);
+            var matches = Matches(archetype.ComponentBitSet);
             if (matches)
             {
                 _matchingArchetypes.Add(archetype);

@@ -1,23 +1,23 @@
 <#@ template language="C#" #>
 <#@ output extension=".cs" #>
-<#@ import namespace="System.Text" #>
 <#@ include file="../Helpers.ttinclude" #>
 
 using System;
 using System.Runtime.CompilerServices;
+using ReArch.Core;
 using ReArch.Core.Utils;
 
 namespace ReArch.Core;
 public partial class Archetype
 {
 <#
-    for (var index = 2; index <= Amount; index++)
+    for (var index = 2; index < Amount; index++)
     {
         var generics = AppendGenerics(index);
         var parameters = AppendGenericInDefaultParams(index, hasNullable:false);
-        var insertParameters = InsertGenericInParams(index);
+        var inParameters = InsertGenericInParams(index);
 #>
-    internal void Set<<#= generics #>>(ref int index, <#= parameters #>)
+    internal int Add<<#= generics #>>(Entity entity, out int index, <#= parameters #>)
 <#
         for (var i = 0; i < index; i++)
         {
@@ -27,17 +27,14 @@ public partial class Archetype
         }
 #>
     {
-       <#
-        for (var i = 0; i < index; i++)
-        {
-#>
-         GetComponents<T<#= i #>>()[index] = t<#= i #>Component;
-<#
-        }
-#>
+        var createdChunk = Add(entity, out index);
+        Set(ref index, <#= inParameters #>);
+        return createdChunk;
     }
 
 <#
     }
 #>
 }
+
+

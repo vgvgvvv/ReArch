@@ -1,3 +1,43 @@
 <#@ template language="C#" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="../Helpers.ttinclude" #><#@ import namespace="System.Linq" #>
+
+using System;
+using System.Runtime.CompilerServices;
+using ReArch.Core.Utils;
+
+namespace ReArch.Core;
+public  partial class Archetype
+{
+
+<#
+    for (var index = 2; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+#>
+    internal Components<<#= generics #>> Get<<#= generics #>>(scoped ref int index)
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+    {
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        ref var component<#= i #> = ref GetComponents<T<#= i #>>()[index];
+<#
+        }
+#>
+        return new Components<<#= generics #>>(<#= string.Join(", ", Enumerable.Range(0, index).Select(i => $"ref component{i}")) #>);
+    }
+
+<#
+    }
+#>
+
+}
