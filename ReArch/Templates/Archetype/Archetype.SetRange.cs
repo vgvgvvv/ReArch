@@ -15,17 +15,17 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -37,24 +37,24 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -67,31 +67,31 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -105,38 +105,38 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -151,45 +151,45 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -205,52 +205,52 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -267,59 +267,59 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -337,66 +337,66 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -415,73 +415,73 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -501,80 +501,80 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -595,87 +595,87 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -697,94 +697,94 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -807,101 +807,101 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -925,108 +925,108 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -1051,115 +1051,115 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -1185,122 +1185,122 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -1327,129 +1327,129 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T17>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t17Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -1477,136 +1477,136 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T17>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t17Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T18>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t18Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -1635,143 +1635,143 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T17>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t17Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T18>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t18Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T19>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t19Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -1801,150 +1801,150 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T17>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t17Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T18>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t18Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T19>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t19Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T20>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t20Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -1975,157 +1975,157 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T17>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t17Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T18>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t18Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T19>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t19Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T20>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t20Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T21>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t21Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -2157,164 +2157,164 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T17>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t17Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T18>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t18Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T19>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t19Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T20>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t20Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T21>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t21Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T22>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t22Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -2347,171 +2347,171 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T17>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t17Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T18>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t18Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T19>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t19Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T20>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t20Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T21>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t21Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T22>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t22Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T23>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t23Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 
@@ -2545,178 +2545,178 @@ public partial class Archetype
     {
         {
             var enumerator = GetComponents<T0>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t0Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T1>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t1Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T2>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t2Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T3>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t3Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T4>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t4Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T5>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t5Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T6>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t6Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T7>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t7Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T8>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t8Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T9>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t9Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T10>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t10Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T11>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t11Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T12>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t12Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T13>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t13Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T14>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t14Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T15>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t15Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T16>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t16Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T17>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t17Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T18>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t18Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T19>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t19Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T20>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t20Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T21>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t21Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T22>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t22Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T23>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t23Component;
-            } while (enumerator.MoveNext());
+            }
         }
         {
             var enumerator = GetComponents<T24>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t24Component;
-            } while (enumerator.MoveNext());
+            }
         }
     }
 

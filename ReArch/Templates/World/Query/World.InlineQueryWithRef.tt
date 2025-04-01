@@ -5,7 +5,7 @@
 
 // TODO: Move query with T0 into world.cs?
 
-namespace ReArch.Core;
+namespace Arch.Core;
 public partial class World
 {
 <#
@@ -16,7 +16,7 @@ public partial class World
         var getComponents = AppendGetComponentsFromFirst(index);
         var insertParams = InsertGenericRefParams(index);
 #>
-    public void InlineEntityQuery<T, <#= generics #>>(in QueryDescription description) where T : struct, IForEachWithEntity<<#= generics #>>
+    public void InlineQuery<T, <#= generics #>>(in QueryDescription description) where T : struct, IForEach<<#= generics #>>
 <#
         for (var i = 0; i < index; i++)
         {
@@ -31,8 +31,6 @@ public partial class World
         var query = Query(in description);
         foreach (var archetype in query.GetArchetypeIterator())
         {
-            var entities = archetype.Entities;
-            var entitiesEnumerator = entities.GetEnumerator();
 <#
         var indexList = new List<int>();
         for (var i = 0; i < index; i++)
@@ -46,9 +44,9 @@ public partial class World
         var moveNextCondition = string.Join(" && ", indexList.Select(i => $"t{i}ComponentsEnumerator.MoveNext()"));
         var updateParams = string.Join(", ", indexList.Select(i => $"ref t{i}ComponentsEnumerator.Current"));
 #>
-            while (entitiesEnumerator.MoveNext() && <#= moveNextCondition #>)
+            while (<#= moveNextCondition #>)
             {
-                t.Update(entitiesEnumerator.Current, <#= updateParams #>);
+                t.Update(<#= updateParams #>);
             }
         }
     }

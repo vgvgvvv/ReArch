@@ -1,3 +1,55 @@
 <#@ template language="C#" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ include file="../../Helpers.ttinclude" #><#@ import namespace="System.Linq" #>
+
+// TODO: Move query with T0 into world.cs?
+
+namespace ReArch.Core;
+public partial class World
+{
+<#
+    for (var index = 1; index <= Amount; index++)
+    {
+        var generics = AppendGenerics(index);
+        var getFirstElement = AppendGetFirstComponentFrom(index);
+        var getComponents = AppendGetComponentsFromFirst(index);
+        var insertParams = InsertGenericRefParams(index);
+#>
+    public void InlineQuery<T, <#= generics #>>(in QueryDescription description, ref T iForEach) where T : struct, IForEach<<#= generics #>>
+<#
+        for (var i = 0; i < index; i++)
+        {
+#>
+        where T<#= i #> : unmanaged
+<#
+        }
+#>
+    {
+        var query = Query(in description);
+        foreach (var archetype in query.GetArchetypeIterator())
+        {
+<#
+        var indexList = new List<int>();
+        for (var i = 0; i < index; i++)
+        {
+            indexList.Add(i);
+#>
+            var t<#= i #>Components = archetype.GetComponents<T<#= i #>>();
+            var t<#= i #>ComponentsEnumerator = t<#= i #>Components.GetEnumerator();
+<#
+        }
+        var moveNextCondition = string.Join(" && ", indexList.Select(i => $"t{i}ComponentsEnumerator.MoveNext()"));
+        var updateParams = string.Join(", ", indexList.Select(i => $"ref t{i}ComponentsEnumerator.Current"));
+#>
+            while (<#= moveNextCondition #>)
+            {
+                iForEach.Update(<#= updateParams #>);
+            }
+        }
+    }
+
+<#
+    }
+#>
+}

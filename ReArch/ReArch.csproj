@@ -166,6 +166,22 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>ForEachWithEntityJob.cs</LastGenOutput>
       </None>
+      <None Update="Templates\World\Query\World.InlineEnittyQuery.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.InlineEnittyQuery.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Query\World.InlineEntityQueryWithRef.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.InlineEntityQueryWithRef.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Query\World.InlineQuery.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.InlineQuery.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\World\Query\World.InlineQueryWithRef.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>World.InlineQueryWithRef.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -358,6 +374,26 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>ForEachWithEntityJob.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Query\World.InlineEnittyQuery.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.InlineEnittyQuery.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Query\World.InlineEntityQueryWithRef.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.InlineEntityQueryWithRef.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Query\World.InlineQuery.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.InlineQuery.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Templates\World\Query\World.InlineQueryWithRef.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>World.InlineQueryWithRef.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 

@@ -35,10 +35,10 @@ public partial class Archetype
 #>
         {
             var enumerator = GetComponents<T<#= i #>>().GetEnumerator(fromIndex, toIndex - fromIndex);
-            do
+            while (enumerator.MoveNext())
             {
                 enumerator.Current = t<#= i #>Component;
-            } while (enumerator.MoveNext());
+            }
         }
 <#
         }
